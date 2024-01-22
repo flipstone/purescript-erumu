@@ -1,0 +1,17 @@
+{ "name":"purescript-erumu"
+, "version": "0.1.0"
+, "description": "Elm-influenced virtual DOM"
+, "repository":
+  { "type": "git"
+  , "url": "git+https://github.com/flipstone/purescript-erumu.git"
+  }
+, "author": "Flipstone Technology Partners <development@flipstone.com>"
+, "license": "BSD-2-Clause"
+, "bugs":
+  { "url": "https://github.com/flipstone/purescript-erumu/issues"
+  }
+, "homepage": "https://github.com/flipstone/purescript-erumu#readme"
+, "dependencies":
+  { "virtual-dom": "~2.1.1"
+  }
+}
