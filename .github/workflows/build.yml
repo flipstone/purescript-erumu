@@ -10,11 +10,7 @@ defaults:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-      actions: read
+    runs-on: [self-hosted, linux, x64]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
