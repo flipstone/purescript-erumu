@@ -1,0 +1,37 @@
+name: Build
+
+on:
+  push:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache
+        uses: actions/cache@v3
+        env:
+          cache-version: build-v2
+        with:
+          key: ${{ env.cache-version }}-${{ hashFiles('spago.yaml') }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            ${{ env.cache-version }}-
+          path: |
+            ./.spago
+            ./output
+
+      - name: Build dev environment
+        run: |
+          set -e
+          ./scripts/build
