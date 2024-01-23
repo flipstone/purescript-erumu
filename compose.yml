@@ -2,10 +2,12 @@ version: "3"
 services:
   dev:
     image: ghcr.io/flipstone/purescript-tools:debian-stable-purescript-0.15.12-2023-11-13-8bb0c3b
+    environment:
+      IN_CONTAINER: 'true'
     stdin_open: true
     tty: true
     volumes:
       - .:/purescript-erumu
-    command: spago test
+    command: spago build
     working_dir: /purescript-erumu
 

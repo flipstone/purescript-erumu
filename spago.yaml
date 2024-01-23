@@ -26,9 +26,6 @@ package:
   name: erumu
   build:
     strict: true
-  test:
-    dependencies: []
-    main: Test.Main
 workspace:
   extra_packages: {}
   package_set:
