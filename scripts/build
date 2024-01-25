@@ -2,7 +2,6 @@
 
 set -e
 
-echo "${BASH_SOURCE%/*}"
 source "${BASH_SOURCE%/*}/lib/run-in-container.sh"
 
 echo "====="

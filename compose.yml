@@ -1,7 +1,7 @@
 version: "3"
 services:
   dev:
-    image: ghcr.io/flipstone/purescript-tools:debian-stable-purescript-0.15.12-2023-11-13-8bb0c3b
+    image: ghcr.io/flipstone/purescript-tools:debian-stable-purescript-0.15.12-2024-01-25-03f63c0
     environment:
       IN_CONTAINER: 'true'
     stdin_open: true
