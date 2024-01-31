@@ -8,4 +8,4 @@ echo "====="
 echo "===== $0 $* ====="
 echo "====="
 
-spago build
+grunt

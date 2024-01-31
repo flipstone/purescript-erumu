@@ -8,6 +8,6 @@ services:
     tty: true
     volumes:
       - .:/purescript-erumu
-    command: spago build
+    command: grunt
     working_dir: /purescript-erumu
 
