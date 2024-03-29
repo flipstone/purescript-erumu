@@ -69,8 +69,8 @@ rerenderApp newTree (App domRef) = do
 
   let patches = diff domState.tree newTree
 
-  Ref.write (domState { tree = newTree }) domRef
-  patchElement patches domState.elem
+  newRoot <- patchElement patches domState.elem
+  Ref.write { tree: newTree, elem: newRoot } domRef
 
 -- Function aliases to sort out the effect types
 -- of the actors involved

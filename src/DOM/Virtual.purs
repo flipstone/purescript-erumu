@@ -25,7 +25,7 @@ type Attributes = Array Attribute
 
 foreign import diff :: VTree -> VTree -> Diff
 foreign import createElement :: VTree -> Effect Element
-foreign import patchElement :: Diff -> Element -> Effect Unit
+foreign import patchElement :: Diff -> Element -> Effect Element
 
 foreign import node :: String
                     -> Attributes
