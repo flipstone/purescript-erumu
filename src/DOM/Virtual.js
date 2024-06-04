@@ -7,7 +7,13 @@ import * as CE from 'virtual-dom/create-element.js';
 
 // These are the namespaced element attributes we want to render that
 // virtual-dom.js will not
-const NAMESPACED_ATTRS = [ "circle"
+const NAMESPACED_ATTRS = [ "aria-expanded"
+                         , "aria-haspopup"
+                         , "aria-hidden"
+                         , "aria-labelledby"
+                         , "aria-modal"
+                         , "arai-orientation"
+                         , "circle"
                          , "class"
                          , "clip-rule"
                          , "d"
