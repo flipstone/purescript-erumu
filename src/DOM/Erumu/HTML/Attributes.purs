@@ -1,24 +1,75 @@
 module DOM.Erumu.HTML.Attributes
-  ( action, alt, autocomplete, autofocus
-  , checked, class_, classes, classN_, clipRule, colSpan, cRadius, cxCoord, cyCoord
-  , data_, dataClipboardText, dataLegId, dataPopupName, dataPopupOpens, defaultValue, defer, dims, disabled
+  ( action
+  , alt
+  , araiOrientation
+  , ariaExpanded
+  , ariaHaspopup
+  , ariaHidden
+  , ariaLabelledby
+  , ariaModal
+  , autocomplete
+  , autofocus
+  , cRadius
+  , checked
+  , classN_
+  , class_
+  , classes
+  , clipRule
+  , colSpan
+  , cxCoord
+  , cyCoord
+  , dataClipboardText
+  , dataLegId
+  , dataPopupName
+  , dataPopupOpens
+  , data_
+  , defaultValue
+  , defer
+  , dims
+  , disabled
   , enctype
-  , fill, fillRule, fontFamily, fontSize, for
+  , fill
+  , fillRule
+  , fontFamily
+  , fontSize
+  , for
   , gradientUnits
-  , height, href
+  , height
+  , href
   , id_
   , method
-  , name, noop
+  , name
+  , noop
   , offset
-  , placeholder, points
-  , role, rows, rx
-  , selected, src, stroke, strokeLinecap, strokeLinejoin, strokeWidth, style
-  , tabindex, target, title, transform, type_
-  , value, viewBox
+  , placeholder
+  , points
+  , role
+  , rows
+  , rx
+  , selected
+  , src
+  , stroke
+  , strokeLinecap
+  , strokeLinejoin
+  , strokeWidth
+  , style
+  , tabindex
+  , target
+  , title
+  , transform
+  , type_
+  , value
+  , viewBox
   , width
-  , x1Coord, x2Coord, xCoord, xmlns
-  , y1Coord, y2Coord, yCoord
-  ) where
+  , x1Coord
+  , x2Coord
+  , xCoord
+  , xmlns
+  , y1Coord
+  , y2Coord
+  , yCoord
+  )
+  where
 
 import Prelude
 import Data.String (joinWith)
@@ -30,6 +81,24 @@ action = attribute "action"
 
 alt :: forall msg. String -> Prop msg
 alt = attribute "alt"
+
+ariaExpanded :: forall msg. Boolean -> Prop msg
+ariaExpanded = attribute "aria-expanded" <<< show
+
+ariaHaspopup :: forall msg. Boolean -> Prop msg
+ariaHaspopup = attribute "aria-haspopup" <<< show
+
+ariaHidden :: forall msg. Boolean -> Prop msg
+ariaHidden = attribute "aria-hidden" <<< show
+
+ariaLabelledby :: forall msg. String -> Prop msg
+ariaLabelledby = attribute "aria-labelledby"
+
+ariaModal :: forall msg. Boolean -> Prop msg
+ariaModal = attribute "aria-modal" <<< show
+
+araiOrientation :: forall msg. String -> Prop msg
+araiOrientation = attribute "aria-orientation"
 
 autocomplete :: forall msg. String -> Prop msg
 autocomplete = attribute "autocomplete"
