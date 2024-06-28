@@ -19,10 +19,6 @@ module DOM.Erumu.HTML.Attributes
   , colSpan
   , cxCoord
   , cyCoord
-  , dataClipboardText
-  , dataLegId
-  , dataPopupName
-  , dataPopupOpens
   , data_
   , defaultValue
   , defer
@@ -141,18 +137,6 @@ cyCoord = attribute "cy"
 
 data_ :: forall msg. String -> Prop msg
 data_ = attribute "data"
-
-dataClipboardText :: forall msg. String -> Prop msg
-dataClipboardText = attribute "data-clipboard-text"
-
-dataLegId :: forall msg. String -> Prop msg
-dataLegId = attribute "data-leg-id"
-
-dataPopupName :: forall msg. String -> Prop msg
-dataPopupName = attribute "data-popup-name"
-
-dataPopupOpens :: forall msg. String -> Prop msg
-dataPopupOpens = attribute "data-popup-opens"
 
 defaultValue :: forall msg. String -> Prop msg
 defaultValue = attribute "defaultValue"
