@@ -27,6 +27,6 @@ package:
   build:
     strict: true
 workspace:
-  extra_packages: {}
-  package_set:
+  extraPackages: {}
+  packageSet:
     registry: 46.2.0

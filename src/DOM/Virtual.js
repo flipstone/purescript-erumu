@@ -24,6 +24,7 @@ const NAMESPACED_ATTRS = [ "aria-controls"
                          , "data-popup-opens"
                          , "fill-rule"
                          , "fill"
+                         , "for"
                          , "gradientUnits"
                          , "height"
                          , "line"
@@ -114,4 +115,3 @@ export function hookFn(hook) {
     hook(node)();
   }
 }
-
