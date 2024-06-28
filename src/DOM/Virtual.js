@@ -6,22 +6,16 @@ import * as CE from 'virtual-dom/create-element.js';
 'use strict';
 
 // These are the namespaced element attributes we want to render that
-// virtual-dom.js will not
-const NAMESPACED_ATTRS = [ "aria-controls"
-                         , "aria-expanded"
-                         , "aria-haspopup"
-                         , "aria-hidden"
-                         , "aria-labelledby"
-                         , "aria-modal"
-                         , "aria-orientation"
-                         , "circle"
+// virtual-dom.js will not. This includes special keyword attributes like "class" and "for" and also svg attributes
+//
+// Since our `Prop` type combines the notion of things like attributes and event handlers
+// if we tried in `node` to add all attributes instead of this explicit whitelist we would incorrectly get html like
+// "className=" instead of "class=" and things like "onclick=function(a){(e)}..." when the onclick event
+// shouldn't be on the html at all
+const NAMESPACED_ATTRS = [ "circle"
                          , "class"
                          , "clip-rule"
                          , "d"
-                         , "data-clipboard-text"
-                         , "data-leg-id"
-                         , "data-popup-name"
-                         , "data-popup-opens"
                          , "fill-rule"
                          , "fill"
                          , "for"
@@ -33,10 +27,6 @@ const NAMESPACED_ATTRS = [ "aria-controls"
                          , "r"
                          , "rect"
                          , "rx"
-                         , "stroke-linecap"
-                         , "stroke-linejoin"
-                         , "stroke-width"
-                         , "stroke"
                          , "tabindex"
                          , "transform"
                          , "viewBox"
@@ -45,6 +35,12 @@ const NAMESPACED_ATTRS = [ "aria-controls"
                          , "x1", "x2", "y1", "y2", "cx", "cy"
                          , "y"
                          ];
+
+// We allow all attributes that start with these strings instead of explicitly listing them in `NAMESPACED_ATTRS`
+const NAMESPACED_ATTRS_PREFIXES = [ "aria"
+                                  , "data"
+                                  , "stroke"
+                                  ];
 
 export function unsafeValue(v) { return v; }
 
@@ -56,7 +52,7 @@ export function node(name) {
 
       for (var i = 0; i < attributeList.length; i++) {
         var a = attributeList[i];
-        if (NAMESPACED_ATTRS.some(v => v == a.key)) {
+        if (NAMESPACED_ATTRS.some(v => v == a.key) || NAMESPACED_ATTRS_PREFIXES.some(prefix => a.key?.startsWith(prefix))) {
           nsAttrs[a.key] = a.value;
         } else {
           attrs[a.key] = a.value;
