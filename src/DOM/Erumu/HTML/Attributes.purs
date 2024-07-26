@@ -44,6 +44,7 @@ module DOM.Erumu.HTML.Attributes
   , rows
   , rx
   , selected
+  , spellcheck
   , src
   , stroke
   , strokeLinecap
@@ -210,6 +211,9 @@ rx = attribute "rx"
 
 selected :: forall msg. String -> Prop msg
 selected = attribute "selected"
+
+spellcheck :: forall msg. String -> Prop msg
+spellcheck = attribute "spellcheck"
 
 src :: forall msg. String -> Prop msg
 src = attribute "src"
