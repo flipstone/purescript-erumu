@@ -4,6 +4,7 @@ module DOM.Erumu.Widget.RadioInputGroup
   , empty
   , selected
   , fill, fillBy
+  , itemEventProp
   , render
   , renderOne
   , update
@@ -67,7 +68,7 @@ renderItem (Model m) idx item =
                       then [ checked "checked" ]
                       else []
       ourProps = [ type_ "radio"
-                 , onEventDecode "onclick" (Selected idx <$> inputChecked)
+                 , itemEventProp idx
                  , name m.groupName
                  ]
 
@@ -77,6 +78,9 @@ renderItem (Model m) idx item =
             [ text $ m.label item
             ]
         ]
+
+itemEventProp :: Int -> Prop Msg
+itemEventProp idx = onEventDecode "onclick" (Selected idx <$> inputChecked)
 
 update :: forall a. Msg -> Model a -> Model a
 update (Selected idx _) (Model m) =
