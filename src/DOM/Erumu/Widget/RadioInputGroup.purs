@@ -1,5 +1,5 @@
 module DOM.Erumu.Widget.RadioInputGroup
-  ( Model
+  ( Model(..)
   , Msg
   , empty
   , selected
