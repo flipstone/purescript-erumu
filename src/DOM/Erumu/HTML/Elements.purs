@@ -17,7 +17,7 @@ module DOM.Erumu.HTML.Elements
 
   , nav, main, header, aside
 
-  , label, form, input, textArea, select, option, button, time, em
+  , label, form, input, textArea, select, option, button, time, em, fieldset
 
   , address
   , script ,noscript
@@ -165,6 +165,9 @@ select = element "select"
 
 option :: forall msg. ElementFn msg
 option = element "option"
+
+fieldset :: forall msg. ElementFn msg
+fieldset = element "fieldset"
 
 button :: forall msg. ElementFn msg
 button = element "button"
