@@ -15,7 +15,7 @@ module DOM.Erumu.HTML.Elements
   , iframe, object, embed
   , img
 
-  , nav, main, header, aside
+  , nav, main, header, aside, legend
 
   , label, form, input, textArea, select, option, button, time, em, fieldset
 
@@ -51,6 +51,9 @@ header = element "header"
 
 aside :: forall msg. ElementFn msg
 aside = element "aside"
+
+legend :: forall msg. ElementFn msg
+legend = element "legend"
 
 span :: forall msg. ElementFn msg
 span = element "span"
