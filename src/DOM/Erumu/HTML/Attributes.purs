@@ -34,7 +34,6 @@ module DOM.Erumu.HTML.Attributes
   , height
   , href
   , id_
-  , indeterminate
   , method
   , name
   , noop
@@ -181,9 +180,6 @@ href = attribute "href"
 
 id_ :: forall msg. String -> Prop msg
 id_ = attribute "id"
-
-indeterminate :: forall msg. String -> Prop msg
-indeterminate = attribute "indeterminate"
 
 method :: forall msg. String -> Prop msg
 method = attribute "method"
