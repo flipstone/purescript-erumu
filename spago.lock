@@ -2,93 +2,97 @@ workspace:
   packages:
     erumu:
       path: ./
-      dependencies:
-        - arrays
-        - bifunctors
-        - console
-        - effect
-        - either
-        - enums
-        - foldable-traversable
-        - foreign
-        - foreign-object
-        - identity
-        - lists
-        - maybe
-        - newtype
-        - parallel
-        - partial
-        - prelude
-        - refs
-        - strings
-        - unsafe-coerce
-        - web-dom
-        - web-events
-        - web-file
-        - web-html
-      test_dependencies: []
-      build_plan:
-        - arrays
-        - bifunctors
-        - console
-        - const
-        - contravariant
-        - control
-        - datetime
-        - distributive
-        - effect
-        - either
-        - enums
-        - exceptions
-        - exists
-        - foldable-traversable
-        - foreign
-        - foreign-object
-        - functions
-        - functors
-        - gen
-        - identity
-        - integers
-        - invariant
-        - js-date
-        - lazy
-        - lists
-        - maybe
-        - media-types
-        - newtype
-        - nonempty
-        - now
-        - nullable
-        - numbers
-        - ordered-collections
-        - orders
-        - parallel
-        - partial
-        - prelude
-        - profunctor
-        - refs
-        - safe-coerce
-        - st
-        - strings
-        - tailrec
-        - transformers
-        - tuples
-        - type-equality
-        - typelevel-prelude
-        - unfoldable
-        - unsafe-coerce
-        - web-dom
-        - web-events
-        - web-file
-        - web-html
-        - web-storage
+      core:
+        dependencies:
+          - arrays
+          - bifunctors
+          - console
+          - effect
+          - either
+          - enums
+          - foldable-traversable
+          - foreign
+          - foreign-object
+          - identity
+          - lists
+          - maybe
+          - newtype
+          - parallel
+          - partial
+          - prelude
+          - refs
+          - strings
+          - unsafe-coerce
+          - web-dom
+          - web-events
+          - web-file
+          - web-html
+        build_plan:
+          - arrays
+          - bifunctors
+          - console
+          - const
+          - contravariant
+          - control
+          - datetime
+          - distributive
+          - effect
+          - either
+          - enums
+          - exceptions
+          - exists
+          - foldable-traversable
+          - foreign
+          - foreign-object
+          - functions
+          - functors
+          - gen
+          - identity
+          - integers
+          - invariant
+          - js-date
+          - lazy
+          - lists
+          - maybe
+          - media-types
+          - newtype
+          - nonempty
+          - now
+          - nullable
+          - numbers
+          - ordered-collections
+          - orders
+          - parallel
+          - partial
+          - prelude
+          - profunctor
+          - refs
+          - safe-coerce
+          - st
+          - strings
+          - tailrec
+          - transformers
+          - tuples
+          - type-equality
+          - typelevel-prelude
+          - unfoldable
+          - unsafe-coerce
+          - web-dom
+          - web-events
+          - web-file
+          - web-html
+          - web-storage
+      test:
+        dependencies: []
+        build_plan: []
   package_set:
     address:
-      registry: 46.2.0
-    compiler: ">=0.15.12 <0.16.0"
+      registry: 58.0.1
+    compiler: ">=0.15.15 <0.16.0"
     content:
       abc-parser: 2.0.1
       ace: 9.1.0
+      address-rfc2821: 0.1.1
       aff: 7.1.0
       aff-bus: 6.0.0
       aff-coroutines: 9.0.0
@@ -98,6 +102,7 @@ workspace:
       affjax-node: 1.0.0
       affjax-web: 1.0.0
       ansi: 7.0.0
+      apexcharts: 0.5.0
       applicative-phases: 1.0.0
       argonaut: 9.0.0
       argonaut-aeson-generic: 0.4.1
@@ -107,16 +112,16 @@ workspace:
       argonaut-traversals: 10.0.0
       argparse-basic: 2.0.0
       array-builder: 0.1.2
-      array-search: 0.5.6
+      array-search: 0.6.0
       arraybuffer: 13.2.0
       arraybuffer-builder: 3.1.0
       arraybuffer-types: 3.0.2
       arrays: 7.3.0
-      arrays-extra: 0.4.2
+      arrays-extra: 0.6.1
       arrays-zipper: 2.0.1
       ask: 1.0.0
       assert: 6.0.0
-      assert-multiple: 0.3.4
+      assert-multiple: 0.4.0
       avar: 5.0.0
       b64: 0.0.8
       barbies: 1.0.1
@@ -131,6 +136,7 @@ workspace:
       canvas-action: 9.0.0
       cartesian: 1.0.6
       catenable-lists: 7.0.0
+      cbor-stream: 1.3.0
       chameleon: 1.0.0
       chameleon-halogen: 1.0.3
       chameleon-react-basic: 1.1.0
@@ -138,6 +144,7 @@ workspace:
       chameleon-transformers: 1.0.0
       channel: 1.0.0
       checked-exceptions: 3.1.1
+      choku: 1.0.1
       classless: 0.1.1
       classless-arbitrary: 0.1.1
       classless-decode-json: 0.1.1
@@ -145,7 +152,7 @@ workspace:
       classnames: 2.0.0
       codec: 6.1.0
       codec-argonaut: 10.0.0
-      codec-json: 1.1.0
+      codec-json: 1.2.0
       colors: 7.0.1
       concur-core: 0.5.0
       concur-react: 0.5.0
@@ -158,9 +165,11 @@ workspace:
       coroutines: 7.0.0
       css: 6.0.0
       css-frameworks: 1.0.1
+      csv-stream: 2.3.0
       data-mvc: 0.0.2
       datetime: 6.1.0
       datetime-parsing: 0.2.0
+      debounce: 0.1.0
       debug: 6.0.2
       decimals: 7.1.0
       default-values: 1.0.1
@@ -170,35 +179,40 @@ workspace:
       distributive: 6.0.0
       dom-filereader: 7.0.0
       dom-indexed: 12.0.0
+      dom-simple: 0.4.0
       dotenv: 4.0.3
       droplet: 0.6.0
-      dts: 0.2.0
-      dual-numbers: 1.0.2
+      dts: 1.0.0
+      dual-numbers: 1.0.3
       dynamic-buffer: 3.0.1
       echarts-simple: 0.0.1
       effect: 4.0.0
       either: 6.1.0
-      elmish: 0.10.0
+      elmish: 0.13.0
       elmish-enzyme: 0.1.1
-      elmish-hooks: 0.10.0
-      elmish-html: 0.8.1
-      elmish-testing-library: 0.3.1
+      elmish-hooks: 0.10.3
+      elmish-html: 0.9.0
+      elmish-testing-library: 0.3.2
       email-validate: 7.0.0
-      encoding: 0.0.8
+      encoding: 0.0.9
       enums: 6.0.1
-      env-names: 0.3.4
+      env-names: 0.4.0
       error: 2.0.0
-      exceptions: 6.0.0
+      eta-conversion: 0.3.2
+      exceptions: 6.1.0
       exists: 6.0.0
       exitcodes: 4.0.0
       expect-inferred: 3.0.0
+      ezfetch: 1.0.0
       fahrtwind: 2.0.0
       fallback: 0.1.0
       fast-vect: 1.2.0
-      fetch: 4.0.0
+      fetch: 4.1.0
       fetch-argonaut: 1.0.1
       fetch-core: 5.1.0
       fetch-yoga-json: 1.1.0
+      ffi-simple: 0.5.1
+      fft-js: 0.1.0
       filterable: 5.0.0
       fix-functor: 0.1.0
       fixed-points: 7.0.0
@@ -207,6 +221,7 @@ workspace:
       float32: 2.0.0
       fmt: 0.2.1
       foldable-traversable: 6.0.0
+      foldable-traversable-extra: 0.0.6
       foreign: 7.0.0
       foreign-object: 4.1.0
       foreign-readwrite: 3.4.0
@@ -227,32 +242,37 @@ workspace:
       generate-values: 1.0.1
       generic-router: 0.0.1
       geojson: 0.0.5
-      geometry-plane: 1.0.3
+      geometria: 2.2.0
+      gojs: 0.1.1
       grain: 3.0.0
       grain-router: 3.0.0
       grain-virtualized: 3.0.0
       graphs: 8.1.0
       group: 4.1.1
       halogen: 7.0.0
-      halogen-bootstrap5: 2.2.1
+      halogen-bootstrap5: 5.3.2
+      halogen-canvas: 1.0.0
       halogen-css: 10.0.0
       halogen-echarts-simple: 0.0.4
       halogen-formless: 4.0.3
-      halogen-helix: 1.0.0
+      halogen-helix: 1.0.1
       halogen-hooks: 0.6.3
       halogen-hooks-extra: 0.9.0
+      halogen-infinite-scroll: 1.1.0
       halogen-store: 0.5.4
       halogen-storybook: 2.0.0
       halogen-subscriptions: 2.0.0
       halogen-svg-elems: 8.0.0
-      halogen-typewriter: 1.0.2
+      halogen-typewriter: 1.0.4
       halogen-vdom: 8.0.0
       halogen-vdom-string-renderer: 0.5.0
+      halogen-xterm: 2.0.0
       heckin: 2.0.1
       heterogeneous: 0.6.0
       homogeneous: 0.4.0
       http-methods: 6.0.0
       httpurple: 4.0.0
+      huffman: 0.4.0
       humdrum: 0.0.1
       hyrule: 2.3.8
       identity: 6.0.0
@@ -262,6 +282,7 @@ workspace:
       int64: 3.0.0
       integers: 6.0.0
       interpolate: 5.0.2
+      intersection-observer: 1.0.1
       invariant: 6.0.0
       jarilo: 1.0.1
       jelly: 0.10.0
@@ -280,15 +301,17 @@ workspace:
       js-promise-aff: 1.0.0
       js-timers: 6.1.0
       js-uri: 3.1.0
-      json: 1.0.0
+      json: 1.1.0
       json-codecs: 5.0.0
       justifill: 0.5.0
       jwt: 0.0.9
       labeled-data: 0.2.0
+      language-cst-parser: 0.14.0
       lazy: 6.0.0
       lazy-joe: 1.0.0
       lcg: 4.0.0
       leibniz: 5.0.0
+      leveldb: 1.0.1
       liminal: 1.0.1
       linalg: 6.0.0
       lists: 7.0.0
@@ -297,13 +320,15 @@ workspace:
       logging-journald: 0.4.0
       lumi-components: 18.0.0
       machines: 7.0.0
-      maps-eager: 0.4.1
+      maps-eager: 0.5.0
       marionette: 1.0.0
       marionette-react-basic-hooks: 0.1.1
+      marked: 0.1.0
       matrices: 5.0.1
       matryoshka: 1.0.0
       maybe: 6.0.0
       media-types: 6.0.0
+      meowclient: 1.0.0
       midi: 4.0.0
       milkis: 9.0.0
       minibench: 4.0.1
@@ -331,7 +356,8 @@ workspace:
       node-child-process: 11.1.0
       node-event-emitter: 3.0.0
       node-execa: 5.0.0
-      node-fs: 9.1.0
+      node-fs: 9.2.0
+      node-glob-basic: 1.3.0
       node-http: 9.1.0
       node-http2: 1.1.1
       node-human-signals: 1.0.0
@@ -339,8 +365,9 @@ workspace:
       node-os: 5.1.0
       node-path: 5.0.0
       node-process: 11.2.0
-      node-readline: 8.1.0
+      node-readline: 8.1.1
       node-sqlite3: 8.0.0
+      node-stream-pipes: 2.1.6
       node-streams: 9.0.0
       node-tls: 0.3.1
       node-url: 7.0.1
@@ -349,19 +376,23 @@ workspace:
       now: 6.0.0
       npm-package-json: 2.0.0
       nullable: 6.0.0
-      numberfield: 0.1.0
+      numberfield: 0.2.2
       numbers: 9.0.1
       oak: 3.1.1
       oak-debug: 1.2.2
       object-maps: 0.3.0
       ocarina: 1.5.4
-      open-folds: 6.3.0
-      open-memoize: 6.1.0
-      open-pairing: 6.1.0
+      oooooooooorrrrrrrmm-lib: 0.0.1
+      open-folds: 6.4.0
+      open-memoize: 6.2.0
+      open-mkdirp-aff: 1.2.0
+      open-pairing: 6.2.0
       options: 7.0.0
-      ordered-collections: 3.1.1
+      optparse: 5.0.1
+      ordered-collections: 3.2.0
       ordered-set: 0.4.0
       orders: 6.0.0
+      owoify: 1.2.0
       pairs: 9.0.1
       parallel: 7.0.0
       parsing: 10.2.0
@@ -373,20 +404,23 @@ workspace:
       phylio: 1.1.2
       pipes: 8.0.0
       pirates-charm: 0.0.1
-      pmock: 0.7.0
+      pmock: 0.9.0
       point-free: 1.0.0
       pointed-list: 0.5.1
       polymorphic-vectors: 4.0.0
       posix-types: 6.0.0
+      postgresql: 2.0.19
       precise: 6.0.0
       precise-datetime: 7.0.0
       prelude: 6.0.1
       prettier-printer: 3.0.0
-      profunctor: 6.0.0
+      priority-queue: 0.1.2
+      profunctor: 6.0.1
       profunctor-lenses: 8.0.0
       protobuf: 4.3.0
       psa-utils: 8.0.0
       psci-support: 6.0.0
+      punycode: 1.0.0
       qualified-do: 2.2.0
       quantities: 12.2.0
       quickcheck: 8.0.1
@@ -407,23 +441,29 @@ workspace:
       react-basic-storybook: 2.0.0
       react-dom: 8.0.0
       react-halo: 3.0.0
-      react-icons: 1.1.2
+      react-icons: 1.1.5
       react-markdown: 0.1.0
       react-testing-library: 4.0.1
       react-virtuoso: 1.0.0
+      reactix: 0.6.1
       read: 1.0.1
       recharts: 1.1.0
       record: 4.0.0
       record-extra: 5.0.1
+      record-ptional-fields: 0.1.2
       record-studio: 1.0.4
       refs: 6.0.0
-      remotedata: 5.0.0
+      remotedata: 5.0.1
+      repr: 0.5.0
+      resize-observer: 1.0.0
       resource: 2.0.1
       resourcet: 1.0.0
       result: 1.0.3
       return: 0.2.0
       ring-modules: 5.0.1
       rito: 0.3.4
+      roman: 0.4.0
+      rough-notation: 1.0.2
       routing: 11.0.0
       routing-duplex: 0.7.0
       run: 5.0.0
@@ -437,17 +477,21 @@ workspace:
       simple-emitter: 3.0.1
       simple-i18n: 2.0.1
       simple-json: 9.0.0
+      simple-json-generics: 0.2.1
       simple-ulid: 3.0.0
       sized-matrices: 1.0.0
       sized-vectors: 5.0.2
-      slug: 3.0.8
+      slug: 3.1.0
       small-ffi: 4.0.1
       soundfonts: 4.1.0
-      sparse-matrices: 1.3.0
-      sparse-polynomials: 2.0.5
-      spec: 7.5.5
-      spec-mocha: 5.0.0
-      spec-quickcheck: 5.0.0
+      sparse-matrices: 2.0.1
+      sparse-polynomials: 3.0.1
+      spec: 8.0.0
+      spec-discovery: 8.3.0
+      spec-mocha: 5.1.1
+      spec-node: 0.0.1
+      spec-quickcheck: 5.0.2
+      spec-reporter-xunit: 0.7.1
       splitmix: 2.1.0
       ssrs: 1.0.0
       st: 6.2.0
@@ -469,10 +513,13 @@ workspace:
       thermite: 6.3.1
       thermite-dom: 0.3.1
       these: 6.0.0
+      threading: 0.0.3
+      tldr: 0.0.0
+      toestand: 0.9.0
       transformation-matrix: 1.0.1
-      transformers: 6.0.0
+      transformers: 6.1.0
       tree-rose: 4.0.2
-      ts-bridge: 2.2.0
+      ts-bridge: 4.0.0
       tuples: 7.0.0
       two-or-more: 1.0.0
       type-equality: 4.0.1
@@ -483,6 +530,7 @@ workspace:
       typelevel-prelude: 7.0.0
       typelevel-regex: 0.0.3
       typelevel-rows: 0.1.0
+      typisch: 0.4.0
       uint: 7.0.0
       ulid: 3.0.1
       uncurried-transformers: 1.1.0
@@ -492,12 +540,13 @@ workspace:
       unicode: 6.0.0
       unique: 0.6.1
       unlift: 1.0.1
-      unordered-collections: 3.0.1
+      unordered-collections: 3.1.0
       unsafe-coerce: 6.0.0
       unsafe-reference: 5.0.0
       untagged-to-tagged: 0.1.4
       untagged-union: 1.0.0
       uri: 9.0.0
+      url-immutable: 1.0.0
       uuid: 9.0.0
       uuidv4: 1.0.0
       validation: 6.0.0
@@ -507,7 +556,7 @@ workspace:
       vectors: 2.1.0
       versions: 7.0.0
       visx: 0.0.2
-      web-clipboard: 5.0.0
+      web-clipboard: 6.0.0
       web-cssom: 2.0.0
       web-cssom-view: 0.1.0
       web-dom: 6.0.0
@@ -522,7 +571,7 @@ workspace:
       web-pointerevents: 2.0.0
       web-proletarian: 1.0.0
       web-promise: 3.2.0
-      web-resize-observer: 2.0.0
+      web-resize-observer: 2.1.0
       web-router: 1.0.0
       web-socket: 4.0.0
       web-storage: 5.0.0
@@ -535,12 +584,14 @@ workspace:
       webextension-polyfill: 0.1.0
       webgpu: 0.0.1
       which: 2.0.0
+      xterm: 1.0.0
       yoga-fetch: 1.0.1
       yoga-json: 5.1.0
       yoga-om: 0.1.0
       yoga-postgres: 6.0.0
       yoga-tree: 1.0.0
       z3: 0.0.2
+      zipperarray: 2.0.0
   extra_packages: {}
 packages:
   arrays:
@@ -667,8 +718,8 @@ packages:
       - unfoldable
   exceptions:
     type: registry
-    version: 6.0.0
-    integrity: sha256-y/xTAEIZIARCE+50/u1di0ncebJ+CIwNOLswyOWzMTw=
+    version: 6.1.0
+    integrity: sha256-K0T89IHtF3vBY7eSAO7eDOqSb2J9kZGAcDN5+IKsF8E=
     dependencies:
       - effect
       - either
@@ -885,8 +936,8 @@ packages:
       - maybe
   ordered-collections:
     type: registry
-    version: 3.1.1
-    integrity: sha256-boSYHmlz4aSbwsNN4VxiwCStc0t+y1F7BXmBS+1JNtI=
+    version: 3.2.0
+    integrity: sha256-o9jqsj5rpJmMdoe/zyufWHFjYYFTTsJpgcuCnqCO6PM=
     dependencies:
       - arrays
       - foldable-traversable
@@ -934,8 +985,8 @@ packages:
     dependencies: []
   profunctor:
     type: registry
-    version: 6.0.0
-    integrity: sha256-99NzxFgTr4CGlCSRYG1kShL+JhYbihhHtbOk1/0R5zI=
+    version: 6.0.1
+    integrity: sha256-E58hSYdJvF2Qjf9dnWLPlJKh2Z2fLfFLkQoYi16vsFk=
     dependencies:
       - control
       - distributive
@@ -1003,8 +1054,8 @@ packages:
       - refs
   transformers:
     type: registry
-    version: 6.0.0
-    integrity: sha256-Pzw40HjthX77tdPAYzjx43LK3X5Bb7ZspYAp27wksFA=
+    version: 6.1.0
+    integrity: sha256-3Bm+Z6tsC/paG888XkywDngJ2JMos+JfOhRlkVfb7gI=
     dependencies:
       - control
       - distributive
@@ -1017,6 +1068,7 @@ packages:
       - maybe
       - newtype
       - prelude
+      - st
       - tailrec
       - tuples
       - unfoldable
