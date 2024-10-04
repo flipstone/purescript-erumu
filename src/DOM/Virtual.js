@@ -85,6 +85,15 @@ export function propagatingEventHandler(eff) {
   }
 }
 
+export function preventDefaultEventHandler(eff) {
+  return function(event) {
+    eff(event)();
+      if(typeof event.preventDefault == "function") {
+        event.preventDefault();
+      }
+  }
+}
+
 export function createElement(tree) {
   return function() {
     return CE.default(tree);

@@ -1,5 +1,6 @@
 module DOM.Erumu.HTML.Events
   ( onclick
+  , preventDefaultOnclick
   , terminalOnclick
   , clickawayfn
   , oninput
@@ -10,13 +11,16 @@ module DOM.Erumu.HTML.Events
   ) where
 
 
-import DOM.Erumu.Types (onEvent, onPropagatingEvent, Prop)
+import DOM.Erumu.Types (onEvent, onPreventDefaultEvent, onPropagatingEvent, Prop)
 
 onclick :: forall msg. msg -> Prop msg
 onclick = onPropagatingEvent "onclick"
 
 terminalOnclick :: forall msg. msg -> Prop msg
 terminalOnclick = onEvent "onclick"
+
+preventDefaultOnclick :: forall msg. msg -> Prop msg
+preventDefaultOnclick = onPreventDefaultEvent "onclick"
 
 oninput :: forall msg. msg -> Prop msg
 oninput = onEvent "oninput"

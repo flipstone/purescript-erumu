@@ -7,7 +7,8 @@ module DOM.Virtual
   , Hook, HookFunctions, newHook, hookValue
 
   , EventHandler
-  , unsafeValue, stringValue, propagatingEventHandler, nonPropagatingEventHandler
+  , unsafeValue, stringValue
+  , preventDefaultEventHandler, propagatingEventHandler, nonPropagatingEventHandler
   ) where
 
 import Prelude
@@ -44,6 +45,7 @@ type EventHandler = (Event -> Effect Unit) -> Value
 
 foreign import nonPropagatingEventHandler :: EventHandler
 foreign import propagatingEventHandler :: EventHandler
+foreign import preventDefaultEventHandler :: EventHandler
 
 foreign import data HookFn :: Type
 foreign import hookFn :: (Node -> Effect Unit) -> HookFn

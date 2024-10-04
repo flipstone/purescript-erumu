@@ -21,7 +21,9 @@ module DOM.Erumu.Types
 
   , HTML, element, text, texts, noElement, toVTree
 
-  , Prop, attribute, onEvent, onPropagatingEvent, onEventDecode, onEventMaybeDecode, hookProp
+  , Prop, attribute , hookProp
+  , onEvent, onPreventDefaultEvent, onPropagatingEvent
+  , onEventDecode, onEventMaybeDecode
 
   , Command, DispatchFn
   , dispatchCmd
@@ -46,7 +48,7 @@ import Effect (Effect)
 import DOM.Erumu.Decode (Decode)
 import DOM.Erumu.Decode as Decode
 import Web.Event.Event (Event)
-import DOM.Virtual (VTree, Attribute, EventHandler, node, stringValue, nonPropagatingEventHandler, propagatingEventHandler)
+import DOM.Virtual (VTree, Attribute, EventHandler, node, stringValue, nonPropagatingEventHandler, preventDefaultEventHandler, propagatingEventHandler)
 import DOM.Virtual as Virtual
 
 --not sure about this. I actually think VTree shouldn't have a type parameter. I certainly don't want to add one for `HTML`. Maybe it should just be concrete.
@@ -330,6 +332,12 @@ onPropagatingEvent :: forall msg. String -> msg -> Prop msg
 onPropagatingEvent name dat =
   handlerProp name
               propagatingEventHandler
+              (\_ -> pure [dat])
+
+onPreventDefaultEvent :: forall msg. String -> msg -> Prop msg
+onPreventDefaultEvent name dat =
+  handlerProp name
+              preventDefaultEventHandler
               (\_ -> pure [dat])
 
 -- This event decode property is used to declare a handler that will *always* process the event into
