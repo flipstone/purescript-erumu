@@ -4,8 +4,8 @@ set -e
 
 source "${BASH_SOURCE%/*}/lib/run-in-container.sh"
 
-echo "====="
-echo "===== $0 $* ====="
-echo "====="
+echo "Formatting with purs-tidy"
+./scripts/format-repo
 
+echo "Building"
 spago build

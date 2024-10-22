@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+source "${BASH_SOURCE%/*}/../scripts/lib/run-in-container.sh"
+
+cd $(git rev-parse --show-toplevel)
+
+if [ "$CI" ]; then
+  MODE=check
+else
+  MODE=format-in-place
+fi
+
+purs-tidy $MODE --config-require "./src/**/*.purs"

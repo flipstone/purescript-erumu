@@ -1,12 +1,12 @@
 services:
   dev:
-    image: ghcr.io/flipstone/purescript-tools:debian-stable-purescript-0.15.15-2024-09-05-15466b3
+    image: ghcr.io/flipstone/purescript-tools:debian-stable-purescript-0.15.15-2024-10-21-d530b53
     environment:
       IN_CONTAINER: 'true'
     stdin_open: true
     tty: true
     volumes:
       - .:/purescript-erumu
-    command: spago build
+    command: ./scripts/build
     working_dir: /purescript-erumu
 
