@@ -25,7 +25,7 @@ newtype Model = Model Fields
 
 type Fields =
   { currentValue :: String
-  , disabled     :: Boolean
+  , disabled :: Boolean
   }
 
 newtype Msg = NewInput String
@@ -35,9 +35,10 @@ empty = withValue ""
 
 withValue :: String -> Model
 withValue s =
-  Model { currentValue: s
-        , disabled:     false
-        }
+  Model
+    { currentValue: s
+    , disabled: false
+    }
 
 value :: Model -> String
 value (Model m) = m.currentValue
@@ -59,19 +60,26 @@ disabled (Model m) = m.disabled
 render :: Array (Prop Msg) -> Model -> HTML Msg
 render = renderWith identity
 
-renderWith :: forall msg.
-              (Msg -> msg)
-           -> Array (Prop msg)
-           -> Model
-           -> HTML msg
+renderWith ::
+  forall msg.
+  (Msg -> msg) ->
+  Array (Prop msg) ->
+  Model ->
+  HTML msg
 renderWith liftMsg userProps (Model m) =
-  let ourProps =
-        [ type_ "text"
-        , onEventDecode "oninput" (liftMsg <<< NewInput <$> inputValue)
-        , HTML.value m.currentValue
-        ]
-  in input (ourProps <> disabledProp m.disabled <> userProps) []
+  let
+    ourProps =
+      [ type_ "text"
+      , onEventDecode "oninput" (liftMsg <<< NewInput <$> inputValue)
+      , HTML.value m.currentValue
+      ]
+  in
+    input (ourProps <> disabledProp m.disabled <> userProps) []
 
-update :: forall m. Applicative m
-       => Msg -> Model -> UpdateResult m Model Msg
+update ::
+  forall m.
+  Applicative m =>
+  Msg ->
+  Model ->
+  UpdateResult m Model Msg
 update (NewInput newValue) model = setValue newValue model ! []

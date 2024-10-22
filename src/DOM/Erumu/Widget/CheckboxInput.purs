@@ -30,21 +30,29 @@ isChecked (Model b) = b
 render :: Model -> HTML Msg
 render = renderWith identity []
 
-renderWith :: forall msg.
-              (Msg -> msg)
-           -> Array (Prop msg)
-           -> Model
-           -> HTML msg
+renderWith ::
+  forall msg.
+  (Msg -> msg) ->
+  Array (Prop msg) ->
+  Model ->
+  HTML msg
 renderWith liftMsg userProps (Model m) =
-  let checkedProp = if m
-                    then [ checked "checked" ]
-                    else []
-      ourProps = [ type_ "checkbox"
-                 , onEventDecode "onclick" (liftMsg <<< Msg <$> inputChecked)
-                 ]
+  let
+    checkedProp =
+      if m then [ checked "checked" ]
+      else []
+    ourProps =
+      [ type_ "checkbox"
+      , onEventDecode "onclick" (liftMsg <<< Msg <$> inputChecked)
+      ]
 
-   in input (checkedProp <> ourProps <> userProps) []
+  in
+    input (checkedProp <> ourProps <> userProps) []
 
-update :: forall  m. Applicative m
-       => Msg -> Model -> UpdateResult m Model Msg
+update ::
+  forall m.
+  Applicative m =>
+  Msg ->
+  Model ->
+  UpdateResult m Model Msg
 update (Msg checked) _ = Model checked ! []

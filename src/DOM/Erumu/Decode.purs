@@ -34,7 +34,7 @@ event = Decode $ \e -> pure (pure e)
 domValue :: forall a b. (a -> Effect b) -> a -> Decode b
 domValue f a = Decode $ \_ -> pure <$> f a
 
-domEffect :: Effect Unit ->  Decode Unit
+domEffect :: Effect Unit -> Decode Unit
 domEffect eff = Decode $ \_ -> pure <$> eff
 
 crash :: forall a. String -> Decode a
@@ -51,10 +51,10 @@ instance applicativeDecode :: Applicative Decode where
 
 instance bindDecode :: Bind Decode where
   bind (Decode dA) f = Decode $ \e -> do
-                         result <- dA e
-                         case f <$> result of
-                           Right (Decode dB) -> dB e
-                           Left err -> pure (Left err)
+    result <- dA e
+    case f <$> result of
+      Right (Decode dB) -> dB e
+      Left err -> pure (Left err)
 
 instance monadDecode :: Monad Decode
 

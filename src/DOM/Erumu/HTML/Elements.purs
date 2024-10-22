@@ -1,28 +1,71 @@
 module DOM.Erumu.HTML.Elements
-  ( div_, span, br, hr
+  ( div_
+  , span
+  , br
+  , hr
   , a
-  , i, strong, code
-  , h1, h2, h3, h4, h5
+  , i
+  , strong
+  , code
+  , h1
+  , h2
+  , h3
+  , h4
+  , h5
   , p
 
-  , dt, dd, dl
+  , dt
+  , dd
+  , dl
   , footer
 
-  , ol, ul, li
+  , ol
+  , ul
+  , li
   , section
-  , table, thead, tbody, tr, td, th
+  , table
+  , thead
+  , tbody
+  , tr
+  , td
+  , th
 
-  , iframe, object, embed
+  , iframe
+  , object
+  , embed
   , img
 
-  , nav, main, header, aside, legend
+  , nav
+  , main
+  , header
+  , aside
+  , legend
 
-  , label, form, input, textArea, select, option, button, time, em, fieldset
+  , label
+  , form
+  , input
+  , textArea
+  , select
+  , option
+  , button
+  , time
+  , em
+  , fieldset
 
   , address
-  , script ,noscript
+  , script
+  , noscript
 
-  , svg, path, rect, graphic, polygon, circle, line, linearGradient, stop, text
+  , svg
+  , path
+  , rect
+  , graphic
+  , polygon
+  , circle
+  , line
+  , linearGradient
+  , stop
+  , text
 
   , ElementFn
   ) where

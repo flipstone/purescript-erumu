@@ -1,6 +1,10 @@
 module DOM.Erumu.Array.Dynamic
   ( Msg
-  , Edit, add, remove, editMsg, updateMsg
+  , Edit
+  , add
+  , remove
+  , editMsg
+  , updateMsg
   , render
   , update
   ) where
@@ -13,8 +17,8 @@ import Data.Either (Either(..))
 import DOM.Erumu.Array as Array
 import DOM.Erumu.Types (UpdateResult, HTML, liftUpdate, (!))
 
-data Edit model =
-    Add model
+data Edit model
+  = Add model
   | Remove Int
 
 add :: forall model. model -> Edit model
@@ -32,20 +36,24 @@ updateMsg = Msg <<< Right
 newtype Msg model msg =
   Msg (Either (Edit model) (Array.Msg msg))
 
-render :: forall model msg.
-          (Int -> model -> HTML (Either (Edit model) msg))
-       -> Array model
-       -> Array (HTML (Msg model msg))
+render ::
+  forall model msg.
+  (Int -> model -> HTML (Either (Edit model) msg)) ->
+  Array model ->
+  Array (HTML (Msg model msg))
 render renderItem items =
-  let renderItem' lifter idx model = Msg <<< map lifter <$> renderItem idx model
-   in Array.renderLift renderItem' items
+  let
+    renderItem' lifter idx model = Msg <<< map lifter <$> renderItem idx model
+  in
+    Array.renderLift renderItem' items
 
-update :: forall m msg model.
-          Applicative m
-       => (msg -> model -> UpdateResult m model msg)
-       -> Msg model msg
-       -> Array model
-       -> Maybe (UpdateResult m (Array model) (Msg model msg))
+update ::
+  forall m msg model.
+  Applicative m =>
+  (msg -> model -> UpdateResult m model msg) ->
+  Msg model msg ->
+  Array model ->
+  Maybe (UpdateResult m (Array model) (Msg model msg))
 update _ (Msg (Left (Add model))) items = Just $
   (items `snoc` model) ! []
 

@@ -1,7 +1,10 @@
 module DOM.Erumu.Types
-  ( UpdateFn, UpdateResult, Return(..)
+  ( UpdateFn
+  , UpdateResult
+  , Return(..)
 
-  , withCommands, (!)
+  , withCommands
+  , (!)
   , addCommands
   , mapModel
   , applyModel
@@ -19,13 +22,24 @@ module DOM.Erumu.Types
   , SignalCommandEmitter
   , emitNone
 
-  , HTML, element, text, texts, noElement, toVTree
+  , HTML
+  , element
+  , text
+  , texts
+  , noElement
+  , toVTree
 
-  , Prop, attribute , hookProp
-  , onEvent, onPreventDefaultEvent, onPropagatingEvent
-  , onEventDecode, onEventMaybeDecode
+  , Prop
+  , attribute
+  , hookProp
+  , onEvent
+  , onPreventDefaultEvent
+  , onPropagatingEvent
+  , onEventDecode
+  , onEventMaybeDecode
 
-  , Command, DispatchFn
+  , Command
+  , DispatchFn
   , dispatchCmd
   , runCommand
   , nocmd
@@ -71,11 +85,12 @@ instance functorReturn :: Functor (Return m model msg) where
   map f (Return signal update) = Return (f signal) update
   map _f (Continue update) = Continue update
 
-withCommands :: forall m model msg.
-                Applicative m
-             => model
-             -> Array (Command m msg)
-             -> UpdateResult m model msg
+withCommands ::
+  forall m model msg.
+  Applicative m =>
+  model ->
+  Array (Command m msg) ->
+  UpdateResult m model msg
 withCommands model commands = { model: model, command: fold commands }
 
 -- Precedence set to 5 to allow combinations with $ like
@@ -85,51 +100,57 @@ withCommands model commands = { model: model, command: fold commands }
 -- To work as desired
 infixl 5 withCommands as !
 
-addCommands :: forall m model msg.
-                Applicative m
-             => UpdateResult m model msg
-             -> Array (Command m msg)
-             -> UpdateResult m model msg
+addCommands ::
+  forall m model msg.
+  Applicative m =>
+  UpdateResult m model msg ->
+  Array (Command m msg) ->
+  UpdateResult m model msg
 addCommands update commands =
   { model: update.model
   , command: update.command <> fold commands
   }
 
-mapModel :: forall m msg modelA modelB.
-            (modelA -> modelB)
-         -> UpdateResult m modelA msg
-         -> UpdateResult m modelB msg
+mapModel ::
+  forall m msg modelA modelB.
+  (modelA -> modelB) ->
+  UpdateResult m modelA msg ->
+  UpdateResult m modelB msg
 mapModel f update = update { model = f update.model }
 
-applyModel :: forall m msg modelA modelB.
-              Apply m
-           => UpdateResult m (modelA -> modelB) msg
-           -> UpdateResult m modelA msg
-           -> UpdateResult m modelB msg
+applyModel ::
+  forall m msg modelA modelB.
+  Apply m =>
+  UpdateResult m (modelA -> modelB) msg ->
+  UpdateResult m modelA msg ->
+  UpdateResult m modelB msg
 applyModel updateF updateA =
   { model: updateF.model updateA.model
   , command: updateF.command <> updateA.command
   }
 
-mapMsg :: forall m model msgA msgB.
-          (msgA -> msgB)
-       -> UpdateResult m model msgA
-       -> UpdateResult m model msgB
+mapMsg ::
+  forall m model msgA msgB.
+  (msgA -> msgB) ->
+  UpdateResult m model msgA ->
+  UpdateResult m model msgB
 mapMsg f update = update { command = f <$> update.command }
 
-liftUpdate :: forall m model msg parentModel parentMsg.
-              (msg -> parentMsg)
-           -> (model -> parentModel)
-           -> (UpdateResult m model msg)
-           -> (UpdateResult m parentModel parentMsg)
+liftUpdate ::
+  forall m model msg parentModel parentMsg.
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  (UpdateResult m model msg) ->
+  (UpdateResult m parentModel parentMsg)
 liftUpdate liftMsg liftModel update = liftUpdateAnd liftMsg liftModel identity update
 
-liftUpdateAnd :: forall m model msg parentModel parentMsg.
-                 (msg -> parentMsg)
-              -> (model -> parentModel)
-              -> (parentModel -> parentModel)
-              -> (UpdateResult m model msg)
-              -> (UpdateResult m parentModel parentMsg)
+liftUpdateAnd ::
+  forall m model msg parentModel parentMsg.
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  (parentModel -> parentModel) ->
+  (UpdateResult m model msg) ->
+  (UpdateResult m parentModel parentMsg)
 liftUpdateAnd liftMsg liftModel modelFn update =
   { model: modelFn $ liftModel update.model
   , command: liftMsg <$> update.command
@@ -141,80 +162,87 @@ emitNone :: forall m signal msg. SignalCommandEmitter m signal msg
 emitNone = const []
 
 -- For parents just lifting the Return (of the same signal type) as their child
-liftReturn :: forall m model msg signal parentMsg parentModel.
-              Applicative m
-           => (msg -> parentMsg)
-           -> (model -> parentModel)
-           -> Return m model msg signal
-           -> Return m parentModel parentMsg signal
+liftReturn ::
+  forall m model msg signal parentMsg parentModel.
+  Applicative m =>
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  Return m model msg signal ->
+  Return m parentModel parentMsg signal
 liftReturn liftMsg liftModel =
   liftReturnAnd liftMsg liftModel (const identity) emitNone
 
 -- For parents who want side effects of processing the Return (of the same signal type)..
 -- This applies the "and" `modifyModel` and `emitter` functions only on `Return` cases
-liftReturnAnd :: forall m model msg signal parentMsg parentModel.
-                 Applicative m
-              => (msg -> parentMsg)
-              -> (model -> parentModel)
-              -> (signal -> parentModel -> parentModel)
-              -> SignalCommandEmitter m signal parentMsg
-              -> Return m model msg signal
-              -> Return m parentModel parentMsg signal
+liftReturnAnd ::
+  forall m model msg signal parentMsg parentModel.
+  Applicative m =>
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  (signal -> parentModel -> parentModel) ->
+  SignalCommandEmitter m signal parentMsg ->
+  Return m model msg signal ->
+  Return m parentModel parentMsg signal
 liftReturnAnd liftMsg liftModel modifyModel emitter r =
   case r of
-    Continue upd  -> Continue $ liftUpdate liftMsg liftModel upd
-    Return v upd  -> Return v $ addCommands (liftUpdateAnd liftMsg liftModel (modifyModel v) upd) (emitter v)
+    Continue upd -> Continue $ liftUpdate liftMsg liftModel upd
+    Return v upd -> Return v $ addCommands (liftUpdateAnd liftMsg liftModel (modifyModel v) upd) (emitter v)
 
-updateResultFrom :: forall m signal model msg.
-                    Return m model msg signal
-                 -> UpdateResult m model msg
+updateResultFrom ::
+  forall m signal model msg.
+  Return m model msg signal ->
+  UpdateResult m model msg
 updateResultFrom r =
   case r of
     Return _val upd -> upd
-    Continue upd    -> upd
+    Continue upd -> upd
 
 -- for parents that quietly return UpdateResult m
-liftIntoUpdate :: forall m model msg signal parentMsg parentModel.
-                  Applicative m
-               => (msg -> parentMsg)
-               -> (model -> parentModel)
-               -> Return m model msg signal
-               -> UpdateResult m parentModel parentMsg
+liftIntoUpdate ::
+  forall m model msg signal parentMsg parentModel.
+  Applicative m =>
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  Return m model msg signal ->
+  UpdateResult m parentModel parentMsg
 liftIntoUpdate liftMsg liftModel =
   liftIntoUpdateAnd liftMsg liftModel (const identity) emitNone
 
 -- for parents that return UpdateResult m with side effects
-liftIntoUpdateAnd :: forall m model msg signal parentMsg parentModel.
-                     Applicative m
-                  => (msg -> parentMsg)
-                  -> (model -> parentModel)
-                  -> (signal -> parentModel -> parentModel)
-                  -> SignalCommandEmitter m signal parentMsg
-                  -> Return m model msg signal
-                  -> UpdateResult m parentModel parentMsg
+liftIntoUpdateAnd ::
+  forall m model msg signal parentMsg parentModel.
+  Applicative m =>
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  (signal -> parentModel -> parentModel) ->
+  SignalCommandEmitter m signal parentMsg ->
+  Return m model msg signal ->
+  UpdateResult m parentModel parentMsg
 liftIntoUpdateAnd liftMsg liftModel modifyModel emitter r =
   updateResultFrom
     $ liftReturnAnd liftMsg liftModel modifyModel emitter r
 
 -- For parents that want to ignore their child's Return and quietly lift-then-Continue
-liftContinue :: forall m model msg childSignal parentSignal parentMsg parentModel.
-                Applicative m
-             => (msg -> parentMsg)
-             -> (model -> parentModel)
-             -> Return m model msg childSignal
-             -> Return m parentModel parentMsg parentSignal
+liftContinue ::
+  forall m model msg childSignal parentSignal parentMsg parentModel.
+  Applicative m =>
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  Return m model msg childSignal ->
+  Return m parentModel parentMsg parentSignal
 liftContinue liftMsg liftModel r =
   Continue $ liftIntoUpdate liftMsg liftModel r
 
 -- For parents that want to quietly lift-then-Continue after processing the child Return
-liftContinueAnd :: forall m model msg childSignal parentSignal parentMsg parentModel.
-                   Applicative m
-                => (msg -> parentMsg)
-                -> (model -> parentModel)
-                -> (childSignal -> parentModel -> parentModel)
-                -> SignalCommandEmitter m childSignal parentMsg
-                -> Return m model msg childSignal
-                -> Return m parentModel parentMsg parentSignal
+liftContinueAnd ::
+  forall m model msg childSignal parentSignal parentMsg parentModel.
+  Applicative m =>
+  (msg -> parentMsg) ->
+  (model -> parentModel) ->
+  (childSignal -> parentModel -> parentModel) ->
+  SignalCommandEmitter m childSignal parentMsg ->
+  Return m model msg childSignal ->
+  Return m parentModel parentMsg parentSignal
 liftContinueAnd liftMsg liftModel modifyModel emitter r =
   Continue $ liftIntoUpdateAnd liftMsg liftModel modifyModel emitter r
 
@@ -225,12 +253,13 @@ runCommand :: forall m msg. DispatchFn m msg -> Command m msg -> m Unit
 runCommand f (Command c) =
   c f
 
-hoistCommand :: forall m f msg.
-                (m ~> f)
-             -> (f ~> m)
-             -> Command m msg
-             -> Command f msg
-hoistCommand toF toM (Command mAction)=
+hoistCommand ::
+  forall m f msg.
+  (m ~> f) ->
+  (f ~> m) ->
+  Command m msg ->
+  Command f msg
+hoistCommand toF toM (Command mAction) =
   Command $ \dispatchF ->
     toF (mAction (toM <<< dispatchF))
 
@@ -254,21 +283,22 @@ runAndSend action = Command (action >>= _)
 sendMsg :: forall m msg. msg -> Command m msg
 sendMsg msg = Command (\dispatch -> dispatch msg)
 
-seqCmd :: forall m msg.
-          Apply m
-       => Command m msg
-       -> Command m msg
-       -> Command m msg
+seqCmd ::
+  forall m msg.
+  Apply m =>
+  Command m msg ->
+  Command m msg ->
+  Command m msg
 seqCmd (Command c1) (Command c2) =
-    Command c1c2
+  Command c1c2
   where
-    c1c2 d = c1 d *> c2 d
+  c1c2 d = c1 d *> c2 d
 
-
-mapCmd :: forall m msg1 msg2.
-          (msg1 -> msg2)
-       -> Command m msg1
-       -> Command m msg2
+mapCmd ::
+  forall m msg1 msg2.
+  (msg1 -> msg2) ->
+  Command m msg1 ->
+  Command m msg2
 mapCmd f (Command action) = Command (action <<< liftMessages f)
 
 instance functorCommand :: Functor (Command m) where
@@ -280,17 +310,19 @@ instance semigroupCommand :: Apply m => Semigroup (Command m msg) where
 instance monoidCommand :: Applicative m => Monoid (Command m msg) where
   mempty = nocmd
 
-liftMessages :: forall m msg1 msg2.
-                (msg1 -> msg2)
-             -> DispatchFn m msg2
-             -> DispatchFn m msg1
+liftMessages ::
+  forall m msg1 msg2.
+  (msg1 -> msg2) ->
+  DispatchFn m msg2 ->
+  DispatchFn m msg1
 liftMessages f g = g <<< f
 
-runcmd :: forall m msg.
-          Command m msg
-       -> DispatchFn m msg
-       -> (m Unit -> Effect Unit)
-       -> Effect Unit
+runcmd ::
+  forall m msg.
+  Command m msg ->
+  DispatchFn m msg ->
+  (m Unit -> Effect Unit) ->
+  Effect Unit
 runcmd (Command f) dispatch execEff = execEff (f dispatch)
 
 instance functorProp :: Functor Prop where
@@ -310,13 +342,15 @@ noElement = text ""
 
 element :: forall msg. String -> Array (Prop msg) -> Array (HTML msg) -> HTML msg
 element name props dsls =
-    HTML render
+  HTML render
   where
-    render :: DispatchFnEff msg -> VTree
-    render disp =
-      let attrs = map (toAttrR disp) props
-          trees = map (toVTreeR disp) dsls
-       in node name attrs trees
+  render :: DispatchFnEff msg -> VTree
+  render disp =
+    let
+      attrs = map (toAttrR disp) props
+      trees = map (toVTreeR disp) dsls
+    in
+      node name attrs trees
 
 hookProp :: forall msg. String -> Virtual.Hook -> Prop msg
 hookProp name hook =
@@ -325,28 +359,28 @@ hookProp name hook =
 onEvent :: forall msg. String -> msg -> Prop msg
 onEvent name dat =
   handlerProp name
-              nonPropagatingEventHandler
-              (\_ -> pure [dat])
+    nonPropagatingEventHandler
+    (\_ -> pure [ dat ])
 
 onPropagatingEvent :: forall msg. String -> msg -> Prop msg
 onPropagatingEvent name dat =
   handlerProp name
-              propagatingEventHandler
-              (\_ -> pure [dat])
+    propagatingEventHandler
+    (\_ -> pure [ dat ])
 
 onPreventDefaultEvent :: forall msg. String -> msg -> Prop msg
 onPreventDefaultEvent name dat =
   handlerProp name
-              preventDefaultEventHandler
-              (\_ -> pure [dat])
+    preventDefaultEventHandler
+    (\_ -> pure [ dat ])
 
 -- This event decode property is used to declare a handler that will *always* process the event into
 -- a Schmods Msg to dispatch, and stops propagation to potential parent handlers.
 onEventDecode :: forall msg. String -> (Decode msg) -> Prop msg
 onEventDecode name decode =
   handlerProp name
-              nonPropagatingEventHandler
-              (\event -> pure <$> Decode.runOrCrash decode event)
+    nonPropagatingEventHandler
+    (\event -> pure <$> Decode.runOrCrash decode event)
 
 -- This event decode property is used to declare a handler that *may or may not* process the event
 -- and it may (will) propagate the event to potential parent handlers.
@@ -355,19 +389,22 @@ onEventDecode name decode =
 onEventMaybeDecode :: forall msg. String -> (Decode (Maybe msg)) -> Prop msg
 onEventMaybeDecode name decode =
   handlerProp name
-              propagatingEventHandler
-              (\event -> catMaybes <$> pure <$> Decode.runOrCrash decode event )
+    propagatingEventHandler
+    (\event -> catMaybes <$> pure <$> Decode.runOrCrash decode event)
 
-handlerProp :: forall msg.
-               String
-            -> EventHandler
-            -> (Event -> Effect (Array msg))
-            -> Prop msg
+handlerProp ::
+  forall msg.
+  String ->
+  EventHandler ->
+  (Event -> Effect (Array msg)) ->
+  Prop msg
 handlerProp name handler mkMsg =
-  Prop (\dispatch ->
-          { key: name
-          , value: handler (traverse_ dispatch <=< mkMsg)
-          })
+  Prop
+    ( \dispatch ->
+        { key: name
+        , value: handler (traverse_ dispatch <=< mkMsg)
+        }
+    )
 
 attribute :: forall msg. String -> String -> Prop msg
 attribute name value =

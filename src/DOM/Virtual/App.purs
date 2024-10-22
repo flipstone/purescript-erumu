@@ -30,15 +30,17 @@ type DOMState =
 
 newtype App = App (Ref DOMState)
 
-newApp :: VTree
-       -> Effect App
+newApp ::
+  VTree ->
+  Effect App
 newApp tree = do
   elem <- createAppElement tree
   App <$> createDomRef tree elem
 
-mountApp :: String
-         -> App
-         -> Effect (Maybe String)
+mountApp ::
+  String ->
+  App ->
+  Effect (Maybe String)
 mountApp containerId (App domRef) = do
   win <- window
   htmlDoc <- document win
@@ -49,21 +51,22 @@ mountApp containerId (App domRef) = do
 
   case container of
     Nothing -> pure $ Just $ joinWith " "
-               [ "DOM.Virtual.App.mountApp:"
-               , "Couldn't find element with id"
-               , containerId
-               , "to mount the app."
-               ]
+      [ "DOM.Virtual.App.mountApp:"
+      , "Couldn't find element with id"
+      , containerId
+      , "to mount the app."
+      ]
 
     Just containerElem -> do
       domState <- Ref.read domRef
       _ <- appendChild (toNode domState.elem)
-                       (toNode containerElem)
+        (toNode containerElem)
       pure Nothing
 
-rerenderApp :: VTree
-            -> App
-            -> Effect Unit
+rerenderApp ::
+  VTree ->
+  App ->
+  Effect Unit
 rerenderApp newTree (App domRef) = do
   domState <- Ref.read domRef
 
@@ -75,12 +78,14 @@ rerenderApp newTree (App domRef) = do
 -- Function aliases to sort out the effect types
 -- of the actors involved
 --
-createAppElement :: VTree
-                 -> Effect Element
+createAppElement ::
+  VTree ->
+  Effect Element
 createAppElement tree = createElement tree
 
-createDomRef :: VTree
-             -> Element
-             -> Effect (Ref DOMState)
+createDomRef ::
+  VTree ->
+  Element ->
+  Effect (Ref DOMState)
 createDomRef tree elem = Ref.new { tree, elem }
 

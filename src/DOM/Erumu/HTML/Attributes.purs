@@ -66,8 +66,7 @@ module DOM.Erumu.HTML.Attributes
   , y1Coord
   , y2Coord
   , yCoord
-  )
-  where
+  ) where
 
 import Prelude
 import Data.String (joinWith)

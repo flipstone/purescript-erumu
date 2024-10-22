@@ -51,12 +51,13 @@ instance runWithCommandsParallel :: Par.Parallel f m => Par.Parallel (RunWithCom
   sequential = hoist Par.sequential Par.parallel
   parallel = hoist Par.parallel Par.sequential
 
-hoist :: forall m f msg model.
-         Functor f
-      => (m ~> f)
-      -> (f ~> m)
-      -> RunWithCommands m msg model
-      -> RunWithCommands f msg model
+hoist ::
+  forall m f msg model.
+  Functor f =>
+  (m ~> f) ->
+  (f ~> m) ->
+  RunWithCommands m msg model ->
+  RunWithCommands f msg model
 hoist toF toM (RunWithCommands action) =
   let
     hoistUpdate update =
@@ -67,43 +68,48 @@ hoist toF toM (RunWithCommands action) =
     RunWithCommands $
       map hoistUpdate (toF action)
 
-run :: forall m msg model.
-       RunWithCommands m msg model
-    -> m (UpdateResult m model msg)
+run ::
+  forall m msg model.
+  RunWithCommands m msg model ->
+  m (UpdateResult m model msg)
 run (RunWithCommands action) =
   action
 
-lift :: forall m msg model.
-        Applicative m
-     => m model
-     -> RunWithCommands m msg model
+lift ::
+  forall m msg model.
+  Applicative m =>
+  m model ->
+  RunWithCommands m msg model
 lift monad =
   RunWithCommands $
-    map ({model: _, command: nocmd}) monad
+    map ({ model: _, command: nocmd }) monad
 
-mapModel :: forall msg m modelA modelB.
-            Functor m
-         => (modelA -> modelB)
-         -> RunWithCommands m msg modelA
-         -> RunWithCommands m msg modelB
+mapModel ::
+  forall msg m modelA modelB.
+  Functor m =>
+  (modelA -> modelB) ->
+  RunWithCommands m msg modelA ->
+  RunWithCommands m msg modelB
 mapModel f (RunWithCommands action) =
   RunWithCommands $
     map (Types.mapModel f) action
 
-applyModel :: forall msg m modelA modelB.
-              Apply m
-           => RunWithCommands m msg (modelA -> modelB)
-           -> RunWithCommands m msg modelA
-           -> RunWithCommands m msg modelB
+applyModel ::
+  forall msg m modelA modelB.
+  Apply m =>
+  RunWithCommands m msg (modelA -> modelB) ->
+  RunWithCommands m msg modelA ->
+  RunWithCommands m msg modelB
 applyModel (RunWithCommands actionF) (RunWithCommands actionA) =
   RunWithCommands $
     map Types.applyModel actionF <*> actionA
 
-bindModel :: forall msg m modelA modelB.
-             Monad m
-          => RunWithCommands m msg modelA
-          -> (modelA -> RunWithCommands m msg modelB)
-          -> RunWithCommands m msg modelB
+bindModel ::
+  forall msg m modelA modelB.
+  Monad m =>
+  RunWithCommands m msg modelA ->
+  (modelA -> RunWithCommands m msg modelB) ->
+  RunWithCommands m msg modelB
 bindModel (RunWithCommands actionA) f =
   RunWithCommands $ do
     updateA <- actionA
@@ -113,33 +119,37 @@ bindModel (RunWithCommands actionA) f =
       , command: updateA.command <> updateB.command
       }
 
-pureModel :: forall msg m model.
-             Applicative m
-          => model
-          -> RunWithCommands m msg model
+pureModel ::
+  forall msg m model.
+  Applicative m =>
+  model ->
+  RunWithCommands m msg model
 pureModel model =
   RunWithCommands (pure $ model ! [])
 
-mapMsg :: forall msgA msgB m model.
-          Functor m
-       => (msgA -> msgB)
-       -> RunWithCommands m msgA model
-       -> RunWithCommands m msgB model
+mapMsg ::
+  forall msgA msgB m model.
+  Functor m =>
+  (msgA -> msgB) ->
+  RunWithCommands m msgA model ->
+  RunWithCommands m msgB model
 mapMsg f (RunWithCommands action) =
   RunWithCommands $
     map (Types.mapMsg f) action
 
-fromUpdate :: forall m msg model.
-              Applicative m
-           => UpdateResult m model msg
-           -> RunWithCommands m msg model
+fromUpdate ::
+  forall m msg model.
+  Applicative m =>
+  UpdateResult m model msg ->
+  RunWithCommands m msg model
 fromUpdate update =
   RunWithCommands (pure update)
 
-fromCommand :: forall m msg.
-               Applicative m
-            => Command m msg
-            -> RunWithCommands m msg Unit
+fromCommand ::
+  forall m msg.
+  Applicative m =>
+  Command m msg ->
+  RunWithCommands m msg Unit
 fromCommand command =
   RunWithCommands $
     pure
@@ -147,19 +157,21 @@ fromCommand command =
       , command: command
       }
 
-toCommand :: forall m msg.
-             Bind m
-          => RunWithCommands m msg Unit
-          -> Command m msg
+toCommand ::
+  forall m msg.
+  Bind m =>
+  RunWithCommands m msg Unit ->
+  Command m msg
 toCommand (RunWithCommands action) =
   dispatchCmd $ \dispatch -> do
     update <- action
     runCommand dispatch update.command
 
-sendMsg :: forall m msg.
-           Applicative m
-        => msg
-        -> RunWithCommands m msg Unit
+sendMsg ::
+  forall m msg.
+  Applicative m =>
+  msg ->
+  RunWithCommands m msg Unit
 sendMsg msg =
   fromCommand (dispatchCmd (\dispatch -> dispatch msg))
 
@@ -170,12 +182,13 @@ sendMsg msg =
   run so that any messages dispatched by the child will be delivery after the
   load message  has been delivered to the parent.
 -}
-loadChildViaMsg :: forall m parentMsg childMsg childModel.
-                   Monad m
-                => (childModel -> parentMsg)
-                -> (childMsg -> parentMsg)
-                -> RunWithCommands m childMsg childModel
-                -> RunWithCommands m parentMsg Unit
+loadChildViaMsg ::
+  forall m parentMsg childMsg childModel.
+  Monad m =>
+  (childModel -> parentMsg) ->
+  (childMsg -> parentMsg) ->
+  RunWithCommands m childMsg childModel ->
+  RunWithCommands m parentMsg Unit
 loadChildViaMsg mkLoadMsg wrapChildMsg (RunWithCommands action) =
   RunWithCommands $ do
     childUpdate <- action

@@ -35,17 +35,25 @@ setValue s = const $ withValue s
 render :: Array (Prop Msg) -> Model -> HTML Msg
 render = renderWith identity
 
-renderWith :: forall msg.
-              (Msg -> msg)
-           -> Array (Prop msg)
-           -> Model
-           -> HTML msg
+renderWith ::
+  forall msg.
+  (Msg -> msg) ->
+  Array (Prop msg) ->
+  Model ->
+  HTML msg
 renderWith liftMsg userProps (Model currentValue) =
-  let ourProps = [ onEventDecode "oninput" (liftMsg <<< NewInput <$> textAreaValue)
-                 , HTML.defaultValue currentValue
-                 ]
-  in textArea (ourProps <> userProps) []
+  let
+    ourProps =
+      [ onEventDecode "oninput" (liftMsg <<< NewInput <$> textAreaValue)
+      , HTML.defaultValue currentValue
+      ]
+  in
+    textArea (ourProps <> userProps) []
 
-update :: forall m. Applicative m
-       => Msg -> Model -> UpdateResult m Model Msg
+update ::
+  forall m.
+  Applicative m =>
+  Msg ->
+  Model ->
+  UpdateResult m Model Msg
 update (NewInput newValue) _ = Model newValue ! []

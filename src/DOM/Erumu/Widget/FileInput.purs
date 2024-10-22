@@ -36,17 +36,25 @@ setValue fl' = const $ withValue fl'
 render :: Array (Prop Msg) -> Model -> HTML Msg
 render = renderWith identity
 
-renderWith :: forall msg.
-              (Msg -> msg)
-           -> Array (Prop msg)
-           -> Model
-           -> HTML msg
+renderWith ::
+  forall msg.
+  (Msg -> msg) ->
+  Array (Prop msg) ->
+  Model ->
+  HTML msg
 renderWith liftMsg userProps _ =
-  let ourProps = [ type_ "file"
-                 , onEventDecode "onchange" (liftMsg <<< NewInput <$> inputFiles)
-                 ]
-  in input (ourProps <> userProps) []
+  let
+    ourProps =
+      [ type_ "file"
+      , onEventDecode "onchange" (liftMsg <<< NewInput <$> inputFiles)
+      ]
+  in
+    input (ourProps <> userProps) []
 
-update :: forall m. Applicative m
-       => Msg -> Model -> UpdateResult m Model Msg
+update ::
+  forall m.
+  Applicative m =>
+  Msg ->
+  Model ->
+  UpdateResult m Model Msg
 update (NewInput newValue) _ = Model newValue ! []

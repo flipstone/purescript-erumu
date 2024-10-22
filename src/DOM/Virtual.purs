@@ -1,14 +1,27 @@
 module DOM.Virtual
-  ( Value, VTree, Diff, Attribute, Attributes
-  , createElement, patchElement, diff
+  ( Value
+  , VTree
+  , Diff
+  , Attribute
+  , Attributes
+  , createElement
+  , patchElement
+  , diff
 
-  , node, text
+  , node
+  , text
 
-  , Hook, HookFunctions, newHook, hookValue
+  , Hook
+  , HookFunctions
+  , newHook
+  , hookValue
 
   , EventHandler
-  , unsafeValue, stringValue
-  , preventDefaultEventHandler, propagatingEventHandler, nonPropagatingEventHandler
+  , unsafeValue
+  , stringValue
+  , preventDefaultEventHandler
+  , propagatingEventHandler
+  , nonPropagatingEventHandler
   ) where
 
 import Prelude
@@ -28,10 +41,11 @@ foreign import diff :: VTree -> VTree -> Diff
 foreign import createElement :: VTree -> Effect Element
 foreign import patchElement :: Diff -> Element -> Effect Element
 
-foreign import node :: String
-                    -> Attributes
-                    -> Array VTree
-                    -> VTree
+foreign import node ::
+  String ->
+  Attributes ->
+  Array VTree ->
+  VTree
 
 foreign import text :: String -> VTree
 

@@ -48,8 +48,7 @@ fillAddIfMissing :: forall a. Eq a => a -> Model a -> Model a
 fillAddIfMissing a originalModel@(Model m) =
   let
     modelWithItem =
-      if elem a m.items
-      then originalModel
+      if elem a m.items then originalModel
       else Model m { items = snoc m.items a }
   in
     fill a modelWithItem
@@ -75,26 +74,32 @@ setDisabled disabled (Model m) =
 
 render :: forall a. Array (Prop Msg) -> Model a -> HTML Msg
 render userProps model@(Model m) =
-  let items = mapWithIndex (renderItem model) m.items
-   in select (staticProps <> disabledProp m.disabled <> userProps) items
+  let
+    items = mapWithIndex (renderItem model) m.items
+  in
+    select (staticProps <> disabledProp m.disabled <> userProps) items
 
 staticProps :: Array (Prop Msg)
-staticProps = [onEventDecode "onchange" (Selected <$> selectedIndex)]
+staticProps = [ onEventDecode "onchange" (Selected <$> selectedIndex) ]
 
 renderItem :: forall a. Model a -> Int -> a -> HTML Msg
 renderItem (Model m) idx item =
-  let attrs = if m.selectedIndex == idx
-              then [HTML.selected "selected"]
-              else []
+  let
+    attrs =
+      if m.selectedIndex == idx then [ HTML.selected "selected" ]
+      else []
 
-   in option attrs [text $ fromMaybe "Select..." $ m.showFn item]
+  in
+    option attrs [ text $ fromMaybe "Select..." $ m.showFn item ]
 
 update :: forall a m. Applicative m => Msg -> Model a -> Return m (Model a) Msg a
 update (Selected idx) (Model m) =
-  let newModel = Model m { selectedIndex = idx }
-   in case selected newModel of
-        Just v -> Return v $ newModel ! []
-        Nothing -> Continue $ newModel ! []
+  let
+    newModel = Model m { selectedIndex = idx }
+  in
+    case selected newModel of
+      Just v -> Return v $ newModel ! []
+      Nothing -> Continue $ newModel ! []
 
 itemList :: forall a. Model a -> Array a
 itemList (Model m) = m.items

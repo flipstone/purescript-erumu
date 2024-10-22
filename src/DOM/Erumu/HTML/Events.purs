@@ -10,7 +10,6 @@ module DOM.Erumu.HTML.Events
   , onmouseleave
   ) where
 
-
 import DOM.Erumu.Types (onEvent, onPreventDefaultEvent, onPropagatingEvent, Prop)
 
 onclick :: forall msg. msg -> Prop msg

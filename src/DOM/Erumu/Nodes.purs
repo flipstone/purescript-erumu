@@ -25,17 +25,17 @@ toSelectElement = unsafeToElement "SELECT"
 toTextAreaElement :: Node -> Either String HTMLTextAreaElement
 toTextAreaElement = unsafeToElement "TEXTAREA"
 
-unsafeToElement :: forall elem.
-                   String
-                -> Node
-                -> Either String elem
+unsafeToElement ::
+  forall elem.
+  String ->
+  Node ->
+  Either String elem
 unsafeToElement expectedTagName node =
   lmap (annotateError expectedTagName) $ do
     genericElem <- nodeToElement node
 
-    if tagName genericElem == expectedTagName
-      then Right $ unsafeCoerce genericElem
-      else Left $ tagName genericElem
+    if tagName genericElem == expectedTagName then Right $ unsafeCoerce genericElem
+    else Left $ tagName genericElem
 
 annotateError :: String -> String -> String
 annotateError tagName err =
@@ -43,7 +43,6 @@ annotateError tagName err =
 
 nodeToElement :: Node -> Either String Element
 nodeToElement node =
-  if fromEnum ElementNode == nodeTypeIndex node
-    then Right $ unsafeCoerce node
-    else Left $ "Node type: " <> show (nodeTypeIndex node)
+  if fromEnum ElementNode == nodeTypeIndex node then Right $ unsafeCoerce node
+  else Left $ "Node type: " <> show (nodeTypeIndex node)
 

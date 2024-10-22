@@ -41,9 +41,8 @@ decodeTarget (Target description toElement) = do
 
   case toElement <$> mbNode of
     (Just (Right elem)) -> pure elem
-    (Just (Left err))   -> Decode.crash ("decodeTarget: " <> description <> ": " <> err)
-    Nothing             -> Decode.crash ("decodeTarget: no node")
-
+    (Just (Left err)) -> Decode.crash ("decodeTarget: " <> description <> ": " <> err)
+    Nothing -> Decode.crash ("decodeTarget: no node")
 
 --
 -- Decoding input elements
