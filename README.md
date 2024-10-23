@@ -30,3 +30,11 @@ recompilation:
 grunt dev
 ```
 
+# Git Blame Ignore Revs
+
+To ignore certain large commits for git blame purposes, such as changing automatic
+formatting, you can add a line to .git-blame-ignore-revs and run
+
+`git config --local blame.ignoreRevsFile .git-blame-ignore-revs`
+
+to set git blame to ignore the SHAs listed in this file.
