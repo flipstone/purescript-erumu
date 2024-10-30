@@ -66,6 +66,7 @@ module DOM.Erumu.HTML.Elements
   , linearGradient
   , stop
   , text
+  , defs
 
   , ElementFn
   ) where
@@ -265,3 +266,6 @@ stop = svgNamespacedElement "stop"
 
 text :: forall msg. ElementFn msg
 text = svgNamespacedElement "text"
+
+defs :: forall msg. ElementFn msg
+defs = svgNamespacedElement "defs"
