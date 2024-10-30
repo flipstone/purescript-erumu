@@ -26,6 +26,8 @@ package:
   name: erumu
   build:
     strict: true
+    censor_project_warnings:
+      - ImplicitQualifiedImportReExport
 workspace:
   extraPackages: {}
   packageSet:
