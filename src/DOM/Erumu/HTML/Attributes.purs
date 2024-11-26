@@ -2,10 +2,13 @@ module DOM.Erumu.HTML.Attributes
   ( action
   , alt
   , ariaControls
+  , ariaDescribedby
   , ariaExpanded
   , ariaHaspopup
   , ariaHidden
+  , ariaInvalid
   , ariaLabelledby
+  , ariaLive
   , ariaModal
   , ariaOrientation
   , autocomplete
@@ -82,6 +85,9 @@ alt = attribute "alt"
 ariaControls :: forall msg. String -> Prop msg
 ariaControls = attribute "aria-controls"
 
+ariaDescribedby :: forall msg. String -> Prop msg
+ariaDescribedby = attribute "aria-describedby"
+
 ariaExpanded :: forall msg. Boolean -> Prop msg
 ariaExpanded = attribute "aria-expanded" <<< show
 
@@ -91,8 +97,14 @@ ariaHaspopup = attribute "aria-haspopup" <<< show
 ariaHidden :: forall msg. Boolean -> Prop msg
 ariaHidden = attribute "aria-hidden" <<< show
 
+ariaInvalid :: forall msg. Boolean -> Prop msg
+ariaInvalid = attribute "aria-invalid" <<< show
+
 ariaLabelledby :: forall msg. String -> Prop msg
 ariaLabelledby = attribute "aria-labelledby"
+
+ariaLive :: forall msg. String -> Prop msg
+ariaLive = attribute "aria-live"
 
 ariaModal :: forall msg. Boolean -> Prop msg
 ariaModal = attribute "aria-modal" <<< show
