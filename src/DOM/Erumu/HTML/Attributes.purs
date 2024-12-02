@@ -43,6 +43,7 @@ module DOM.Erumu.HTML.Attributes
   , offset
   , placeholder
   , points
+  , required
   , role
   , rows
   , rx
@@ -210,6 +211,9 @@ placeholder = attribute "placeholder"
 
 points :: forall msg. String -> Prop msg
 points = attribute "points"
+
+required :: forall msg. Prop msg
+required = attribute "required" ""
 
 role :: forall msg. String -> Prop msg
 role = attribute "role"
