@@ -22,6 +22,7 @@ module DOM.Virtual
   , preventDefaultEventHandler
   , propagatingEventHandler
   , nonPropagatingEventHandler
+  , propagatingNonMultiplePointerEventHandler
   ) where
 
 import Prelude
@@ -57,6 +58,7 @@ foreign import unsafeValue :: forall v. v -> Value
 --
 type EventHandler = (Event -> Effect Unit) -> Value
 
+foreign import propagatingNonMultiplePointerEventHandler :: EventHandler
 foreign import nonPropagatingEventHandler :: EventHandler
 foreign import propagatingEventHandler :: EventHandler
 foreign import preventDefaultEventHandler :: EventHandler

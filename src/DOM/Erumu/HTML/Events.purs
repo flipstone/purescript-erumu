@@ -8,12 +8,16 @@ module DOM.Erumu.HTML.Events
   , onfocus
   , onmouseenter
   , onmouseleave
+  , onNonMultipleClick
   ) where
 
-import DOM.Erumu.Types (onEvent, onPreventDefaultEvent, onPropagatingEvent, Prop)
+import DOM.Erumu.Types (Prop, onEvent, onPreventDefaultEvent, onPropagatingEvent, onPropagatingNonMultiplePointerEvent)
 
 onclick :: forall msg. msg -> Prop msg
 onclick = onPropagatingEvent "onclick"
+
+onNonMultipleClick :: forall msg. msg -> Prop msg
+onNonMultipleClick = onPropagatingNonMultiplePointerEvent "onclick"
 
 terminalOnclick :: forall msg. msg -> Prop msg
 terminalOnclick = onEvent "onclick"
