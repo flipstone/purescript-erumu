@@ -70,6 +70,17 @@ export function node(name) {
   }
 }
 
+// Handles only 0 clicks (keyboard)
+// and single mouse clicks
+export function propagatingNonMultiplePointerEventHandler(eff) {
+  return function(event) {
+    if (!(event instanceof PointerEvent) || event.detail > 1) {
+      return;
+    }
+    eff(event)();
+  }
+}
+
 export function nonPropagatingEventHandler(eff) {
   return function(event) {
     eff(event)();

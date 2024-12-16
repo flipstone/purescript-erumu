@@ -35,6 +35,7 @@ module DOM.Erumu.Types
   , onEvent
   , onPreventDefaultEvent
   , onPropagatingEvent
+  , onPropagatingNonMultiplePointerEvent
   , onEventDecode
   , onEventMaybeDecode
 
@@ -62,7 +63,7 @@ import Effect (Effect)
 import DOM.Erumu.Decode (Decode)
 import DOM.Erumu.Decode as Decode
 import Web.Event.Event (Event)
-import DOM.Virtual (VTree, Attribute, EventHandler, node, stringValue, nonPropagatingEventHandler, preventDefaultEventHandler, propagatingEventHandler)
+import DOM.Virtual (Attribute, EventHandler, VTree, node, nonPropagatingEventHandler, preventDefaultEventHandler, propagatingEventHandler, propagatingNonMultiplePointerEventHandler, stringValue)
 import DOM.Virtual as Virtual
 
 --not sure about this. I actually think VTree shouldn't have a type parameter. I certainly don't want to add one for `HTML`. Maybe it should just be concrete.
@@ -366,6 +367,12 @@ onPropagatingEvent :: forall msg. String -> msg -> Prop msg
 onPropagatingEvent name dat =
   handlerProp name
     propagatingEventHandler
+    (\_ -> pure [ dat ])
+
+onPropagatingNonMultiplePointerEvent :: forall msg. String -> msg -> Prop msg
+onPropagatingNonMultiplePointerEvent name dat =
+  handlerProp name
+    propagatingNonMultiplePointerEventHandler
     (\_ -> pure [ dat ])
 
 onPreventDefaultEvent :: forall msg. String -> msg -> Prop msg
