@@ -22,7 +22,7 @@ module DOM.Erumu.HTML.Elements
   , code
   , col
   , colgroup
-  , data_
+  , dataE
   , datalist
   , dd
   , defs
@@ -92,7 +92,7 @@ module DOM.Erumu.HTML.Elements
   , search
   , section
   , select
-  , slot
+  , slotE
   , small
   , source
   , span
@@ -214,8 +214,8 @@ col = element "col"
 colgroup :: forall msg. ElementFn msg
 colgroup = element "colgroup"
 
-data_ :: forall msg. ElementFn msg
-data_ = element "data"
+dataE :: forall msg. ElementFn msg
+dataE = element "data"
 
 datalist :: forall msg. ElementFn msg
 datalist = element "datalist"
@@ -394,8 +394,8 @@ samp = element "samp"
 search :: forall msg. ElementFn msg
 search = element "search"
 
-slot :: forall msg. ElementFn msg
-slot = element "slot"
+slotE :: forall msg. ElementFn msg
+slotE = element "slot"
 
 small :: forall msg. ElementFn msg
 small = element "small"
