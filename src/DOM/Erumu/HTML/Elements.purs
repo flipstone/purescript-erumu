@@ -1,74 +1,123 @@
 module DOM.Erumu.HTML.Elements
-  ( div_
-  , span
-  , br
-  , hr
+  ( ElementFn
   , a
-  , i
-  , strong
+  , abbr
+  , address
+  , area
+  , article
+  , aside
+  , audio
+  , b
+  , base
+  , bdi
+  , bdo
+  , blockquote
+  , body
+  , br
+  , button
+  , canvas
+  , caption
+  , circle
+  , cite
   , code
+  , col
+  , colgroup
+  , data_
+  , datalist
+  , dd
+  , defs
+  , del
+  , details
+  , dfn
+  , dialog
+  , div_
+  , dl
+  , dt
+  , em
+  , embed
+  , fieldset
+  , figcaption
+  , figure
+  , footer
+  , form
+  , graphic
   , h1
   , h2
   , h3
   , h4
   , h5
-  , p
-
-  , dt
-  , dd
-  , dl
-  , footer
-
-  , ol
-  , ul
-  , li
-  , section
-  , table
-  , thead
-  , tbody
-  , tr
-  , td
-  , th
-
-  , iframe
-  , object
-  , embed
-  , img
-
-  , nav
-  , main
+  , head
   , header
-  , aside
-  , legend
-
-  , label
-  , form
+  , hgroup
+  , hr
+  , html
+  , i
+  , iframe
+  , img
   , input
-  , textArea
-  , select
-  , option
-  , button
-  , time
-  , em
-  , fieldset
-
-  , address
-  , script
-  , noscript
-
-  , svg
-  , path
-  , rect
-  , graphic
-  , polygon
-  , circle
+  , ins
+  , kbd
+  , label
+  , legend
+  , li
   , line
   , linearGradient
+  , main
+  , map
+  , mark
+  , menu
+  , meta
+  , meter
+  , nav
+  , noscript
+  , object
+  , ol
+  , optgroup
+  , option
+  , output
+  , p
+  , path
+  , picture
+  , polygon
+  , pre
+  , progress
+  , q
+  , rect
+  , rp
+  , rt
+  , ruby
+  , s
+  , samp
+  , script
+  , search
+  , section
+  , select
+  , slot
+  , small
+  , source
+  , span
   , stop
+  , strong
+  , sub
+  , summary
+  , sup
+  , svg
+  , table
+  , tbody
+  , td
+  , template
   , text
-  , defs
-
-  , ElementFn
+  , textArea
+  , th
+  , thead
+  , time
+  , tr
+  , track
+  , u
+  , ul
+  , var
+  , video
+  , wbr
   ) where
 
 import Prelude
@@ -120,6 +169,72 @@ code = element "code"
 a :: forall msg. ElementFn msg
 a = element "a"
 
+abbr :: forall msg. ElementFn msg
+abbr = element "abbr"
+
+area :: forall msg. ElementFn msg
+area = element "area"
+
+article :: forall msg. ElementFn msg
+article = element "article"
+
+audio :: forall msg. ElementFn msg
+audio = element "audio"
+
+b :: forall msg. ElementFn msg
+b = element "b"
+
+base :: forall msg. ElementFn msg
+base = element "base"
+
+bdi :: forall msg. ElementFn msg
+bdi = element "bdi"
+
+bdo :: forall msg. ElementFn msg
+bdo = element "bdo"
+
+blockquote :: forall msg. ElementFn msg
+blockquote = element "blockquote"
+
+body :: forall msg. ElementFn msg
+body = element "body"
+
+canvas :: forall msg. ElementFn msg
+canvas = element "canvas"
+
+caption :: forall msg. ElementFn msg
+caption = element "caption"
+
+cite :: forall msg. ElementFn msg
+cite = element "cite"
+
+col :: forall msg. ElementFn msg
+col = element "col"
+
+colgroup :: forall msg. ElementFn msg
+colgroup = element "colgroup"
+
+data_ :: forall msg. ElementFn msg
+data_ = element "data"
+
+datalist :: forall msg. ElementFn msg
+datalist = element "datalist"
+
+del :: forall msg. ElementFn msg
+del = element "del"
+
+details :: forall msg. ElementFn msg
+details = element "details"
+
+dfn :: forall msg. ElementFn msg
+dfn = element "dfn"
+
+dialog :: forall msg. ElementFn msg
+dialog = element "dialog"
+
+ins :: forall msg. ElementFn msg
+ins = element "ins"
+
 iframe :: forall msg. ElementFn msg
 iframe = element "iframe"
 
@@ -128,6 +243,12 @@ object = element "object"
 
 embed :: forall msg. ElementFn msg
 embed = element "embed"
+
+figcaption :: forall msg. ElementFn msg
+figcaption = element "figcaption"
+
+figure :: forall msg. ElementFn msg
+figure = element "figure"
 
 img :: forall msg. ElementFn msg
 img = element "img"
@@ -146,6 +267,30 @@ h4 = element "h4"
 
 h5 :: forall msg. ElementFn msg
 h5 = element "h5"
+
+head :: forall msg. ElementFn msg
+head = element "head"
+
+hgroup :: forall msg. ElementFn msg
+hgroup = element "hgroup"
+
+html :: forall msg. ElementFn msg
+html = element "html"
+
+kbd :: forall msg. ElementFn msg
+kbd = element "kbd"
+
+mark :: forall msg. ElementFn msg
+mark = element "mark"
+
+menu :: forall msg. ElementFn msg
+menu = element "menu"
+
+meta :: forall msg. ElementFn msg
+meta = element "meta"
+
+meter :: forall msg. ElementFn msg
+meter = element "meter"
 
 p :: forall msg. ElementFn msg
 p = element "p"
@@ -210,8 +355,65 @@ textArea = element "textarea"
 select :: forall msg. ElementFn msg
 select = element "select"
 
+optgroup :: forall msg. ElementFn msg
+optgroup = element "optgroup"
+
 option :: forall msg. ElementFn msg
 option = element "option"
+
+output :: forall msg. ElementFn msg
+output = element "output"
+
+picture :: forall msg. ElementFn msg
+picture = element "picture"
+
+pre :: forall msg. ElementFn msg
+pre = element "pre"
+
+progress :: forall msg. ElementFn msg
+progress = element "progress"
+
+q :: forall msg. ElementFn msg
+q = element "q"
+
+rp :: forall msg. ElementFn msg
+rp = element "rp"
+
+rt :: forall msg. ElementFn msg
+rt = element "rt"
+
+ruby :: forall msg. ElementFn msg
+ruby = element "ruby"
+
+s :: forall msg. ElementFn msg
+s = element "s"
+
+samp :: forall msg. ElementFn msg
+samp = element "samp"
+
+search :: forall msg. ElementFn msg
+search = element "search"
+
+slot :: forall msg. ElementFn msg
+slot = element "slot"
+
+small :: forall msg. ElementFn msg
+small = element "small"
+
+source :: forall msg. ElementFn msg
+source = element "source"
+
+sub :: forall msg. ElementFn msg
+sub = element "sub"
+
+summary :: forall msg. ElementFn msg
+summary = element "summary"
+
+sup :: forall msg. ElementFn msg
+sup = element "sup"
+
+template :: forall msg. ElementFn msg
+template = element "template"
 
 fieldset :: forall msg. ElementFn msg
 fieldset = element "fieldset"
@@ -221,6 +423,21 @@ button = element "button"
 
 time :: forall msg. ElementFn msg
 time = element "time"
+
+track :: forall msg. ElementFn msg
+track = element "track"
+
+u :: forall msg. ElementFn msg
+u = element "u"
+
+var :: forall msg. ElementFn msg
+var = element "var"
+
+video :: forall msg. ElementFn msg
+video = element "video"
+
+wbr :: forall msg. ElementFn msg
+wbr = element "wbr"
 
 em :: forall msg. ElementFn msg
 em = element "em"
@@ -236,6 +453,9 @@ noscript = element "noscript"
 
 main :: forall msg. ElementFn msg
 main = element "main"
+
+map :: forall msg. ElementFn msg
+map = element "map"
 
 svg :: forall msg. ElementFn msg
 svg = svgNamespacedElement "svg"
