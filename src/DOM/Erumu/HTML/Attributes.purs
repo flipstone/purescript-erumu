@@ -536,7 +536,7 @@ spellcheck = attribute "spellcheck"
 src :: forall msg. String -> Prop msg
 src = attribute "src"
 
-step :: forall msg. Int -> Prop msg
+step :: forall msg. Number -> Prop msg
 step = attribute "step" <<< show
 
 stroke :: forall msg. String -> Prop msg
