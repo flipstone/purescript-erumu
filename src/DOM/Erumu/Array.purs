@@ -17,20 +17,22 @@ in the array Msg type and used for routing during processing.
 module DOM.Erumu.Array
   ( Msg(..)
   , render
+  , renderConcat
   , renderLift
   , update
-  , updateF
   , updateArrayWith
+  , updateF
   ) where
 
 import Prelude
 
-import Data.Identity (Identity(..))
-import Data.Array (updateAt, mapWithIndex, (!!))
-import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Traversable (sequence)
-import Data.Newtype (unwrap)
 import DOM.Erumu.Types ((!), HTML, Return(..), UpdateResult, liftReturn, liftUpdate)
+import Data.Array (mapWithIndex, updateAt, (!!))
+import Data.FoldableWithIndex (foldMapWithIndex)
+import Data.Identity (Identity(..))
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Newtype (unwrap)
+import Data.Traversable (sequence)
 
 data Msg msg = Msg Int msg
 
@@ -61,6 +63,16 @@ renderLift renderItem items =
   mapWithIndex renderIdx items
   where
   renderIdx idx item = renderItem (Msg idx) idx item
+
+renderConcat ::
+  forall msg model.
+  (model -> Array (HTML msg)) ->
+  Array model ->
+  Array (HTML (Msg msg))
+renderConcat renderItem items =
+  foldMapWithIndex renderIdx items
+  where
+  renderIdx idx item = map (Msg idx) <$> (renderItem item)
 
 update ::
   forall m msg model.
