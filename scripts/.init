@@ -1,3 +1,4 @@
 #!/bin/sh
 
 export PS1="\[\e[35m\]PURESCRIPT\[\e[m\]:\w \\$ "
+npm install

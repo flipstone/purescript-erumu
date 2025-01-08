@@ -20,7 +20,7 @@ jobs:
         env:
           cache-version: build-v1
         with:
-          key: ${{ env.cache-version }}-${{ hashFiles('spago.yaml') }}-${{ hashFiles('package.json') }}
+          key: ${{ env.cache-version }}-${{ hashFiles('spago.yaml', 'package.json') }}
           restore-keys: |
             ${{ env.cache-version }}-
           path: |

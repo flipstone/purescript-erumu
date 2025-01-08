@@ -26,9 +26,8 @@ package:
   name: erumu
   build:
     strict: true
-    censor_project_warnings:
+    censorProjectWarnings:
       - ImplicitQualifiedImportReExport
 workspace:
-  extraPackages: {}
   packageSet:
-    registry: 58.0.1
+    registry: 60.7.0
