@@ -30,4 +30,4 @@ package:
       - ImplicitQualifiedImportReExport
 workspace:
   packageSet:
-    registry: 60.7.0
+    registry: 66.1.0
