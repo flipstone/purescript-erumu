@@ -1,6 +1,7 @@
 module DOM.Erumu.RunWithCommands
   ( RunWithCommands
   , run
+  , runWithDispatch
   , lift
   , mapMsg
   , mapModel
@@ -17,7 +18,7 @@ module DOM.Erumu.RunWithCommands
 import Prelude
 import Control.Parallel as Par
 
-import DOM.Erumu.Types (UpdateResult, Command, (!), dispatchCmd, runCommand, nocmd)
+import DOM.Erumu.Types (UpdateResult, Command, (!), DispatchFn, dispatchCmd, runCommand, nocmd)
 import DOM.Erumu.Types as Types
 
 {-
@@ -74,6 +75,17 @@ run ::
   m (UpdateResult m model msg)
 run (RunWithCommands action) =
   action
+
+runWithDispatch ::
+  forall m msg model.
+  Monad m =>
+  DispatchFn m msg ->
+  RunWithCommands m msg model ->
+  m model
+runWithDispatch dispatch runWithCommands = do
+  updateResult <- run runWithCommands
+  runCommand dispatch updateResult.command
+  pure updateResult.model
 
 lift ::
   forall m msg model.
