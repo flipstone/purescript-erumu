@@ -1,4 +1,5 @@
 { "name":"purescript-erumu",
+  "license": "MIT",
   "version":"0.1.0",
   "description":"Elm-influenced virtual DOM",
   "repository": {
