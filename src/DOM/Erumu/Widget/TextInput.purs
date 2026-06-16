@@ -1,16 +1,17 @@
 module DOM.Erumu.Widget.TextInput
-  ( Msg
-  , Model
-  , empty
-  , withValue
-  , setValue
-  , setDisabled
+  ( Model
+  , Msg
   , disabled
-  , value
+  , empty
   , isBlank
   , render
   , renderWith
+  , renderWithType
+  , setDisabled
+  , setValue
   , update
+  , value
+  , withValue
   ) where
 
 import Prelude
@@ -70,6 +71,23 @@ renderWith liftMsg userProps (Model m) =
   let
     ourProps =
       [ type_ "text"
+      , onEventDecode "oninput" (liftMsg <<< NewInput <$> inputValue)
+      , HTML.value m.currentValue
+      ]
+  in
+    input (ourProps <> disabledProp m.disabled <> userProps) []
+
+renderWithType ::
+  forall msg.
+  String ->
+  (Msg -> msg) ->
+  Array (Prop msg) ->
+  Model ->
+  HTML msg
+renderWithType inputType liftMsg userProps (Model m) =
+  let
+    ourProps =
+      [ type_ inputType
       , onEventDecode "oninput" (liftMsg <<< NewInput <$> inputValue)
       , HTML.value m.currentValue
       ]
