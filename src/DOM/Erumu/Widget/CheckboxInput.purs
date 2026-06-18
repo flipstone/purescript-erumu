@@ -1,31 +1,50 @@
+-- | A checkbox input widget (`type="checkbox"`). Built on
+-- | `DOM.Erumu.Widget.Input.Builder`, its value is the `Boolean` checked state.
 module DOM.Erumu.Widget.CheckboxInput
   ( Model
   , Msg
+  , disabled
   , empty
   , fill
   , isChecked
   , render
   , renderWith
+  , setDisabled
   , update
   ) where
 
 import Prelude
 
-import DOM.Erumu.HTML (input, type_, checked)
-import DOM.Erumu.HTML.Decoder (inputChecked)
-import DOM.Erumu.Types (HTML, UpdateResult, Prop, onEventDecode, (!))
+import DOM.Erumu.Types (HTML, UpdateResult, Prop)
+import DOM.Erumu.Widget.Input.Builder as InputBuilder
 
-newtype Model = Model Boolean
-newtype Msg = Msg Boolean
+type Model = InputBuilder.Model
 
+type Msg = InputBuilder.Msg
+
+-- | An unchecked checkbox.
 empty :: Model
-empty = Model false
+empty = InputBuilder.withValue (InputBuilder.CheckboxInput false) InputBuilder.init
 
+-- | Set the checked state while preserving the input's disabled state.
+-- | A no-op for models that are not checkboxes.
 fill :: Boolean -> Model -> Model
-fill b _ = Model b
+fill b model = InputBuilder.withValue (InputBuilder.CheckboxInput b) model
 
+-- | Whether the checkbox is checked. Returns `false` for a model that is not a
+-- | checkbox.
 isChecked :: Model -> Boolean
-isChecked (Model b) = b
+isChecked model =
+  case InputBuilder.inputTypeValue model of
+    InputBuilder.CheckboxInput b -> b
+    _ -> false
+
+setDisabled :: Boolean -> Model -> Model
+setDisabled bool model =
+  InputBuilder.setDisabled bool model
+
+disabled :: Model -> Boolean
+disabled model = InputBuilder.disabled model
 
 render :: Model -> HTML Msg
 render = renderWith identity []
@@ -36,18 +55,8 @@ renderWith ::
   Array (Prop msg) ->
   Model ->
   HTML msg
-renderWith liftMsg userProps (Model m) =
-  let
-    checkedProp =
-      if m then [ checked "checked" ]
-      else []
-    ourProps =
-      [ type_ "checkbox"
-      , onEventDecode "onclick" (liftMsg <<< Msg <$> inputChecked)
-      ]
-
-  in
-    input (checkedProp <> ourProps <> userProps) []
+renderWith liftMsg userProps model =
+  InputBuilder.renderWith liftMsg userProps model
 
 update ::
   forall m.
@@ -55,4 +64,5 @@ update ::
   Msg ->
   Model ->
   UpdateResult m Model Msg
-update (Msg checked) _ = Model checked ! []
+update msg model =
+  InputBuilder.update msg model

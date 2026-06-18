@@ -1,62 +1,87 @@
+-- | A single-line text input widget. Built on `DOM.Erumu.Widget.Input.Builder`,
+-- | it covers the three text-like input flavours that carry a `String` value:
+-- | plain text (`withValue`), email (`withEmailValue`), and password
+-- | (`withPasswordValue`). The flavour chosen at construction is preserved by
+-- | the value accessors and `setValue`.
 module DOM.Erumu.Widget.TextInput
   ( Model
   , Msg
   , disabled
   , empty
+  , fill
   , isBlank
   , render
   , renderWith
-  , renderWithType
   , setDisabled
   , setValue
   , update
   , value
+  , withEmailValue
+  , withPasswordValue
   , withValue
   ) where
 
 import Prelude
 
-import DOM.Erumu.Form (disabledProp)
-import DOM.Erumu.HTML (input, type_)
-import DOM.Erumu.HTML as HTML
-import DOM.Erumu.HTML.Decoder (inputValue)
-import DOM.Erumu.Types (UpdateResult, HTML, Prop, onEventDecode, (!))
+import DOM.Erumu.Types (HTML, Prop, UpdateResult)
+import DOM.Erumu.Widget.Input.Builder as InputBuilder
 
-newtype Model = Model Fields
+type Model = InputBuilder.Model
 
-type Fields =
-  { currentValue :: String
-  , disabled :: Boolean
-  }
+type Msg = InputBuilder.Msg
 
-newtype Msg = NewInput String
-
+-- | An empty plain-text input.
 empty :: Model
-empty = withValue ""
+empty = InputBuilder.init
 
+-- | A plain-text input pre-filled with the given value.
 withValue :: String -> Model
-withValue s =
-  Model
-    { currentValue: s
-    , disabled: false
-    }
+withValue s = InputBuilder.withValue (InputBuilder.TextInput s) InputBuilder.init
 
+-- | An email input (`type="email"`) pre-filled with the given value.
+withEmailValue :: String -> Model
+withEmailValue s = InputBuilder.withValue (InputBuilder.EmailInput s) InputBuilder.init
+
+-- | A password input (`type="password"`) pre-filled with the given value.
+withPasswordValue :: String -> Model
+withPasswordValue s = InputBuilder.withValue (InputBuilder.PasswordInput s) InputBuilder.init
+
+-- | The current string value. Returns `""` for a model that is not one of the
+-- | text-like flavours (e.g. a checkbox or file input).
 value :: Model -> String
-value (Model m) = m.currentValue
+value model =
+  case InputBuilder.inputTypeValue model of
+    InputBuilder.CheckboxInput _ -> ""
+    InputBuilder.EmailInput emailValue -> emailValue
+    InputBuilder.FileInput _ -> ""
+    InputBuilder.TextInput textValue -> textValue
+    InputBuilder.PasswordInput passwordValue -> passwordValue
 
+-- | Whether the input's value is empty.
 isBlank :: Model -> Boolean
-isBlank (Model m) = eq "" m.currentValue
+isBlank m = eq "" (value m)
 
+-- | Replace the value while preserving the input flavour and disabled state. A no-op for models
+-- | that are not text-like.
 setValue :: String -> Model -> Model
-setValue s (Model m) =
-  Model m { currentValue = s }
+setValue s model =
+  case InputBuilder.inputTypeValue model of
+    InputBuilder.CheckboxInput _ -> model
+    InputBuilder.EmailInput _ -> InputBuilder.withValue (InputBuilder.EmailInput s) model
+    InputBuilder.FileInput _ -> model
+    InputBuilder.TextInput _ -> InputBuilder.withValue (InputBuilder.TextInput s) model
+    InputBuilder.PasswordInput _ -> InputBuilder.withValue (InputBuilder.PasswordInput s) model
+
+-- | Alias for `setValue`: replace the input's value.
+fill :: String -> Model -> Model
+fill s model = setValue s model
 
 setDisabled :: Boolean -> Model -> Model
-setDisabled bool (Model m) =
-  Model m { disabled = bool }
+setDisabled bool model =
+  InputBuilder.setDisabled bool model
 
 disabled :: Model -> Boolean
-disabled (Model m) = m.disabled
+disabled model = InputBuilder.disabled model
 
 render :: Array (Prop Msg) -> Model -> HTML Msg
 render = renderWith identity
@@ -67,32 +92,8 @@ renderWith ::
   Array (Prop msg) ->
   Model ->
   HTML msg
-renderWith liftMsg userProps (Model m) =
-  let
-    ourProps =
-      [ type_ "text"
-      , onEventDecode "oninput" (liftMsg <<< NewInput <$> inputValue)
-      , HTML.value m.currentValue
-      ]
-  in
-    input (ourProps <> disabledProp m.disabled <> userProps) []
-
-renderWithType ::
-  forall msg.
-  String ->
-  (Msg -> msg) ->
-  Array (Prop msg) ->
-  Model ->
-  HTML msg
-renderWithType inputType liftMsg userProps (Model m) =
-  let
-    ourProps =
-      [ type_ inputType
-      , onEventDecode "oninput" (liftMsg <<< NewInput <$> inputValue)
-      , HTML.value m.currentValue
-      ]
-  in
-    input (ourProps <> disabledProp m.disabled <> userProps) []
+renderWith liftMsg userProps model =
+  InputBuilder.renderWith liftMsg userProps model
 
 update ::
   forall m.
@@ -100,4 +101,5 @@ update ::
   Msg ->
   Model ->
   UpdateResult m Model Msg
-update (NewInput newValue) model = setValue newValue model ! []
+update msg model =
+  InputBuilder.update msg model

@@ -1,37 +1,60 @@
+-- | A file-picker input widget (`type="file"`). Built on
+-- | `DOM.Erumu.Widget.Input.Builder`, its value is the `FileList` the browser
+-- | reports for the chosen file(s), or `Nothing` when nothing is selected.
 module DOM.Erumu.Widget.FileInput
-  ( Msg
-  , Model(..)
+  ( Model(..)
+  , Msg
+  , disabled
   , empty
-  , withValue
-  , value
-  , setValue
   , render
   , renderWith
+  , setDisabled
+  , setValue
   , update
+  , value
+  , withValue
   ) where
 
 import Prelude
-import Data.Maybe (Maybe(..))
 
-import DOM.Erumu.HTML (input, type_)
-import DOM.Erumu.HTML.Decoder (inputFiles)
-import DOM.Erumu.Types (UpdateResult, HTML, Prop, onEventDecode, (!))
+import Data.Maybe (Maybe(..))
+import DOM.Erumu.Types (UpdateResult, HTML, Prop)
+import DOM.Erumu.Widget.Input.Builder as InputBuilder
 import Web.File.FileList (FileList)
 
-newtype Model = Model (Maybe FileList)
-newtype Msg = NewInput (Maybe FileList)
+type Model = InputBuilder.Model
 
+type Msg = InputBuilder.Msg
+
+-- | A file input with nothing selected.
 empty :: Model
-empty = withValue Nothing
+empty = InputBuilder.withValue (InputBuilder.FileInput Nothing) InputBuilder.init
 
+-- | A file input pre-populated with the given selection.
 withValue :: Maybe FileList -> Model
-withValue = Model
+withValue maybeFiles = InputBuilder.withValue (InputBuilder.FileInput maybeFiles) InputBuilder.init
 
+-- | The currently selected files, or `Nothing` when nothing is selected (or the
+-- | model is not a file input).
 value :: Model -> Maybe FileList
-value (Model fl') = fl'
+value model =
+  case InputBuilder.inputTypeValue model of
+    InputBuilder.FileInput maybeFiles -> maybeFiles
+    _ -> Nothing
 
+-- | Replace the selection. A no-op for a model that is not a file input. Preserves the input's disabled state.
 setValue :: Maybe FileList -> Model -> Model
-setValue fl' = const $ withValue fl'
+setValue maybeFiles model =
+  case InputBuilder.inputTypeValue model of
+    InputBuilder.FileInput _ -> InputBuilder.withValue (InputBuilder.FileInput maybeFiles) model
+    _ -> model
+
+setDisabled :: Boolean -> Model -> Model
+setDisabled bool model =
+  InputBuilder.setDisabled bool model
+
+disabled :: Model -> Boolean
+disabled model = InputBuilder.disabled model
 
 render :: Array (Prop Msg) -> Model -> HTML Msg
 render = renderWith identity
@@ -42,14 +65,8 @@ renderWith ::
   Array (Prop msg) ->
   Model ->
   HTML msg
-renderWith liftMsg userProps _ =
-  let
-    ourProps =
-      [ type_ "file"
-      , onEventDecode "onchange" (liftMsg <<< NewInput <$> inputFiles)
-      ]
-  in
-    input (ourProps <> userProps) []
+renderWith liftMsg userProps model =
+  InputBuilder.renderWith liftMsg userProps model
 
 update ::
   forall m.
@@ -57,4 +74,5 @@ update ::
   Msg ->
   Model ->
   UpdateResult m Model Msg
-update (NewInput newValue) _ = Model newValue ! []
+update msg model =
+  InputBuilder.update msg model
