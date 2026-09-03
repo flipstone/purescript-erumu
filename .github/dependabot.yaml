@@ -1,0 +1,60 @@
+# Keep our container images, npm packages and GitHub Actions up to date.
+#
+# This is a public repo, so Dependabot needs no extra secrets here: build.yaml
+# uses none.
+#
+# Coverage: build.yaml runs the build on push inside the purescript-tools image,
+# which is what the compose entry tracks.
+#
+# There is no spago entry: Dependabot has no PureScript ecosystem, so spago.yaml
+# is not something it can see. Those packages stay a manual concern. The npm
+# entry below covers only the grunt harness that drives the PureScript build,
+# not the PureScript packages themselves.
+#
+# Cooldown: every entry below waits before opening a PR, so a version has to
+# survive in the wild first. Where the ecosystem understands semver (npm),
+# majors are deliberately the *shortest* wait -- they are read and tested by a
+# person anyway, whereas a patch or minor is the kind of bump that gets merged
+# on sight, so it earns the longer soak. github-actions and docker-compose
+# accept only default-days, so those entries wait a flat week.
+version: 2
+updates:
+  # One PR for all action bumps rather than one PR per action.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # compose.yaml's ghcr.io/flipstone/purescript-tools, the image the build runs
+  # in. It is pinned to a purescript-tools release tag plus digest, which is
+  # what lets Dependabot compare versions and propose bumps (tag and digest
+  # move together). Bumps stay within the pinned PureScript version, which
+  # sits in the tag prefix; a PureScript upgrade is a manual repin.
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+
+  # The grunt harness and virtual-dom. All public, with a committed lockfile.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+      semver-patch-days: 14
+      semver-minor-days: 14
+      semver-major-days: 7
+    groups:
+      grunt:
+        patterns:
+          - "grunt"
+          - "grunt-*"
