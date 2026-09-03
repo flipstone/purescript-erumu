@@ -3,3 +3,4 @@ output/
 .psc-ide-port
 .purs*
 .spago
+.env
