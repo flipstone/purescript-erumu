@@ -1,6 +1,8 @@
 services:
   dev:
-    image: ghcr.io/flipstone/purescript-tools:debian-stable-purescript-0.15.15-2025-11-26-7860668
+    # A purescript-tools release tag (debian-purescript-<purs>-build-<date>.<run>)
+    # pinned by digest; Dependabot bumps tag and digest together.
+    image: ghcr.io/flipstone/purescript-tools:debian-purescript-0.15.16-build-2026.9.10.45@sha256:49b2e2b37dcf12faedc390cc91f4db1a53e79dafd31cd2bb0cb9cb87e57c5ac5
     environment:
       IN_CONTAINER: 'true'
     stdin_open: true
