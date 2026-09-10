@@ -7,7 +7,6 @@
     "url":"git+https://github.com/flipstone/purescript-erumu.git"
   },
   "author":"Flipstone Technology Partners <development@flipstone.com>",
-  "license":"BSD-2-Clause",
   "bugs": {
     "url":"https://github.com/flipstone/purescript-erumu/issues"
   },
@@ -16,7 +15,7 @@
     "virtual-dom":"~2.1.1"
   },
   "devDependencies": {
-    "grunt":"^1.6.1",
+    "grunt":"^1.6.3",
     "grunt-cli":"^1.5.0",
     "grunt-contrib-watch":"^1.1.0",
     "grunt-exec":"^3.0.0"

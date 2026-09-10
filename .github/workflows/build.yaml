@@ -3,6 +3,10 @@ name: Build
 on:
   push:
 
+# The build only reads the repository; it pushes nothing.
+permissions:
+  contents: read
+
 defaults:
   run:
     shell: bash

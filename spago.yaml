@@ -5,7 +5,6 @@ package:
   dependencies:
     - arrays
     - bifunctors
-    - console
     - effect
     - either
     - enums
@@ -29,6 +28,7 @@ package:
   name: erumu
   build:
     strict: true
+    pedanticPackages: true
     censorProjectWarnings:
       - ImplicitQualifiedImportReExport
 workspace:
